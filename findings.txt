@@ -1,0 +1,21 @@
+Spark provides various ways to interact with Spark SQL including  basic SQL and the DataFrames API. Although, when computing a result the same execution engine is used, independent of which API/language you are using to express the computation. The DataFrames API were introduced to make Spark easier to program and provide richer query optimizations.
+Let's take an example of query from BigBench.
+
+insert into table Model
+select ss.customer AS cid,
+count(CASE WHEN i.class=1 THEN 1 ELSE NULL END) AS id1,
+...
+count(CASE WHEN i.class=15 THEN 1 ELSE NULL END) AS id15
+FROM store_sales_table ss
+INNER JOIN item_table i
+ON (ss.item1 = i.item2  AND i.category = 1)
+GROUP BY ss.customer
+HAVING count(ss.item1) > 1
+ORDER BY cid
+
+Although this SQL query seems easy to understand but implementing this in Spark's DataFrame API is a nightmare because there was no easy way to count certain column values and add them to a column which is exactly this ' ... count(CASE WHEN i.class=1 THEN 1 ELSE NULL END) AS id1 ... ' of query. Even Spark SQL when parse this query everyother part of query is converted to dataframe api while this part remain as SQL and will be directly converted JVM bitcode using quasiquotes.
+
+TungstenAggregate(key=[customer#0], functions=[(count(item1#1)...),
+		(count(CASE WHEN (cast(class#3 as double) = 1.0) THEN 1 ELSE null)...),(
+
+This shows that even though Spark SQL provide DSL to make programming easy but it still lack some functionality and requires a large learning curve for new commers.
