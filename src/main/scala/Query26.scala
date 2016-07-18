@@ -20,6 +20,7 @@ object Query26 {
     val sparkConf = new SparkConf().setAppName("Query")
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+    sqlContext.setConf("spark.sql.autoBroadcastJoinThreshold","-1")
     // uncomment following for complete dataset
     // val schema_store_sales = StructType(Array(
     //   StructField("ss_sold_date_sk", IntegerType,true),
@@ -51,8 +52,8 @@ object Query26 {
       StructField("ss_item_sk",IntegerType,true),
       StructField("ss_customer_sk",IntegerType,true)))
 
-
-    val df_store_sales = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load("/home/whassan/tmp/csv/store_sales_sanitized.csv")
+    
+    val df_store_sales = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load("/home/whassan/tmp/csv/store_sales_sanitized_2_gb.csv")
     //val df_store_sales = broadcast(df_store_sales_temp)
     //df_store_sales.show()
 
@@ -87,7 +88,7 @@ object Query26 {
       StructField("i_category",StringType,true)))
 
 
-    val df_item = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load("/home/whassan/tmp/csv/item_sanitized.csv")
+    val df_item = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load("/home/whassan/tmp/csv/item_sanitized_3_mb.csv")
     //df_item.show()
     // val store_sales = sqlContext.read.json("/home/whassan/tmp/store_sales.json")
     // val item = sqlContext.read.json("/home/whassan/tmp/item.json")
@@ -100,22 +101,22 @@ object Query26 {
     // sales_items_fil.show()
     // val customer_i_class = sales_items_fil.groupBy("customer").agg( count("item1"))
 
-    val lines = scala.io.Source.fromFile("/home/whassan/hps/query-examples/src/main/scala/q26.sql").mkString
+    val lines = scala.io.Source.fromFile("/home/whassan/spark-sql-query-tests/src/main/scala/q26.sql").mkString
     val fin  = sqlContext.sql(lines)
     fin.collect()
-    //fin.show()
-    // println(fin.queryExecution.logical.numberedTreeString)
-    // println("\n===================================\n")
-    // println(fin.queryExecution.optimizedPlan.numberedTreeString)
-    // println("\nExecuted Plan=====================\n")
-    // println(fin.queryExecution.executedPlan.numberedTreeString)
-    // println("\nSpark Plan=====================\n")
-    // println(fin.queryExecution.sparkPlan.numberedTreeString)
-    // println("\nStatistics=====================\n")
-    // println(fin.queryExecution.analyzed.statistics.sizeInBytes)
-    // println(df_item.queryExecution.analyzed.statistics.sizeInBytes)
-    // println(df_store_sales.queryExecution.analyzed.statistics.sizeInBytes)
-    // println(fin.queryExecution.toString)
+    fin.show()
+    println(fin.queryExecution.logical.numberedTreeString)
+    println("\n===================================\n")
+    println(fin.queryExecution.optimizedPlan.numberedTreeString)
+    println("\nExecuted Plan=====================\n")
+    println(fin.queryExecution.executedPlan.numberedTreeString)
+    println("\nSpark Plan=====================\n")
+    println(fin.queryExecution.sparkPlan.numberedTreeString)
+    println("\nStatistics=====================\n")
+    println(fin.queryExecution.analyzed.statistics.sizeInBytes)
+    println(df_item.queryExecution.analyzed.statistics.sizeInBytes)
+    println(df_store_sales.queryExecution.analyzed.statistics.sizeInBytes)
+    println(fin.queryExecution.toString)
     println("DONE with Query 26")
   }
 }

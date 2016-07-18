@@ -22,4 +22,3 @@ INNER JOIN item_table i
 )
 GROUP BY ss.ss_customer_sk
 HAVING count(ss.ss_item_sk) > 3
-ORDER BY cid
