@@ -21,4 +21,4 @@ INNER JOIN item_table i
   AND ss.ss_customer_sk IS NOT NULL
 )
 GROUP BY ss.ss_customer_sk
-HAVING count(ss.ss_item_sk) > 3
+HAVING count(ss.ss_item_sk) > 1
