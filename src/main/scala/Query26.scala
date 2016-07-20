@@ -13,7 +13,11 @@ import org.apache.spark.sql.execution.joins._
 /**
   *  q26
 command to run
-./bin/spark-submit --num-executors 4  --jars /home/whassan/Downloads/commons-csv-1.2.jar,/home/whassan/Downloads/spark-csv_2.10-1.4.0.jar  --class Query26  ~/hps/query-examples/target/scala-2.10/query26_2.10-0.1.jar
+./bin/spark-submit --num-executors 4  --jars /home/whassan/Downloads/commons-csv-1.2.jar,/home/whassan/Downloads/spark-csv_2.10-1.4.0.jar  --class Query26  ~/hps/query-examples/target/scala-2.10/query26_2.10-0.1.jar "/home/whassan/tmp/csv/store_sales_sanitized_200_lines.csv"  "/home/whassan/tmp/csv/item_sanitized_200_lines.csv"
+
+  store_sales table absolute path = args[0]
+  item table absolute path = args[1]
+
   */
 object Query26 {
   def main(args: Array[String]) {
@@ -21,8 +25,8 @@ object Query26 {
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
     sqlContext.setConf("spark.sql.autoBroadcastJoinThreshold","-1")
-    val table_store_slaes_path = "/home/whassan/tmp/csv/store_sales_sanitized_200_lines.csv"
-    val table_item_path = "/home/whassan/tmp/csv/item_sanitized_200_lines.csv"
+    val table_store_slaes_path = args(0)
+    val table_item_path = args(0)
     // uncomment following for complete dataset
     // val schema_store_sales = StructType(Array(
     //   StructField("ss_sold_date_sk", IntegerType,true),
