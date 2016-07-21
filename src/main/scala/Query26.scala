@@ -24,9 +24,12 @@ object Query26 {
     val sparkConf = new SparkConf().setAppName("Query")
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
-    sqlContext.setConf("spark.sql.autoBroadcastJoinThreshold","-1")
+    //sqlContext.setConf("spark.sql.autoBroadcastJoinThreshold","-1")
+    //sqlContext.setConf("spark.broadcast.factory","None")
+    //sqlContext.setConf("spark.broadcast.blockSize","0")
+    //sqlContext.setConf("spark.driver.maxResultSize","16g")
     val table_store_slaes_path = args(0)
-    val table_item_path = args(0)
+    val table_item_path = args(1)
     // uncomment following for complete dataset
     // val schema_store_sales = StructType(Array(
     //   StructField("ss_sold_date_sk", IntegerType,true),
@@ -57,10 +60,7 @@ object Query26 {
     val schema_store_sales = StructType(Array(
       StructField("ss_item_sk",IntegerType,true),
       StructField("ss_customer_sk",IntegerType,true)))
-
-    
     val df_store_sales = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load(table_store_slaes_path)
-    df_store_sales.cache().count()
 
     // uncomment following for complete dataset
     // val schema_item = StructType(Array(
@@ -93,16 +93,17 @@ object Query26 {
       StructField("i_category",StringType,true)))
 
     val df_item = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load(table_item_path)
-    df_item.cache().count()
     df_store_sales.registerTempTable("store_sales_table")
     df_item.registerTempTable("item_table")
+    df_store_sales.cache().first()
+    df_item.cache().first()
 
     val t0 = System.currentTimeMillis
     val lines = scala.io.Source.fromFile("/home/whassan/spark-sql-query-tests/src/main/scala/q26.sql").mkString
     val fin  = sqlContext.sql(lines)
     fin.collect()
     val t1 = System.currentTimeMillis
-    println("****** Query 26 time(ms) took: " + (t1 - t0))
+    println("****** Query 26 time(s) took: " + (t1 - t0).toFloat / 1000)
     fin.show()
     // println(fin.queryExecution.logical.numberedTreeString)
     // println("\n===================================\n")
@@ -115,7 +116,7 @@ object Query26 {
     // println(fin.queryExecution.analyzed.statistics.sizeInBytes)
     // println(df_item.queryExecution.analyzed.statistics.sizeInBytes)
     // println(df_store_sales.queryExecution.analyzed.statistics.sizeInBytes)
-    // println(fin.queryExecution.toString)
+    println(fin.queryExecution.toString)
     println(":Done with Query 26")
   }
 }
