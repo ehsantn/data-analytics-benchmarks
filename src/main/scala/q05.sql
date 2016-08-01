@@ -1,8 +1,8 @@
 SELECT
-  --wcs_user_sk,
+  wcs_user_sk,
   clicks_in_category,
-  CASE WHEN cd_education_status IN (-education) THEN 1 ELSE 0 END AS college_education,
-  CASE WHEN cd_gender = (-gender) THEN 1 ELSE 0 END AS male,
+  CASE WHEN cd_education_status = 8303423 THEN 1 ELSE 0 END AS college_education,
+  CASE WHEN cd_gender = 1 THEN 1 ELSE 0 END AS male,
   clicks_in_1,
   clicks_in_2,
   clicks_in_3,
@@ -13,7 +13,7 @@ SELECT
 FROM( 
   SELECT 
     wcs_user_sk,
-    SUM( CASE WHEN i_category = (-category) THEN 1 ELSE 0 END) AS clicks_in_category,
+    SUM( CASE WHEN i_category = 90882 THEN 1 ELSE 0 END) AS clicks_in_category,
     SUM( CASE WHEN i_category_id = 1 THEN 1 ELSE 0 END) AS clicks_in_1,
     SUM( CASE WHEN i_category_id = 2 THEN 1 ELSE 0 END) AS clicks_in_2,
     SUM( CASE WHEN i_category_id = 3 THEN 1 ELSE 0 END) AS clicks_in_3,
@@ -28,4 +28,3 @@ FROM(
 )q05_user_clicks_in_cat
 INNER JOIN customer ct ON wcs_user_sk = c_customer_sk
 INNER JOIN customer_demographics ON c_current_cdemo_sk = cd_demo_sk
-;
