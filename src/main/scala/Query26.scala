@@ -1,5 +1,5 @@
-
 import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.SQLContext
@@ -10,6 +10,14 @@ import scala.language.existentials
 import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
 import org.apache.spark.sql.catalyst.TableIdentifier
 import org.apache.spark.sql.execution.joins._
+
+import org.apache.spark.mllib.clustering.{KMeansModel, KMeans}
+import org.apache.spark.mllib.linalg.{Vector, Vectors}
+import org.apache.spark.mllib.regression.LabeledPoint
+import org.apache.spark.rdd.RDD
+
+import java.lang.management.ManagementFactory
+import scala.collection.JavaConversions._
 /**
   *  q26
 command to run
@@ -19,7 +27,20 @@ command to run
   item table absolute path = args[1]
 
   */
+
 object Query26 {
+   def printExecutionPlan(fin: DataFrame){
+     println(fin.queryExecution.logical.numberedTreeString)
+     println("\n===================================\n")
+     println(fin.queryExecution.optimizedPlan.numberedTreeString)
+     println("\nExecuted Plan=====================\n")
+     println(fin.queryExecution.executedPlan.numberedTreeString)
+     println("\nSpark Plan=====================\n")
+     println(fin.queryExecution.sparkPlan.numberedTreeString)
+     println("\nStatistics=====================\n")
+     println(fin.queryExecution.analyzed.statistics.sizeInBytes)
+     println(fin.queryExecution.toString)
+   }
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("Query")
     val sc = new SparkContext(sparkConf)
@@ -101,22 +122,24 @@ object Query26 {
     val t0 = System.currentTimeMillis
     val lines = scala.io.Source.fromFile("/home/whassan/spark-sql-query-tests/src/main/scala/q26.sql").mkString
     val fin  = sqlContext.sql(lines)
-    fin.collect()
+    fin.cache().first()
     val t1 = System.currentTimeMillis
     println("****** Query 26 time(s) took: " + (t1 - t0).toFloat / 1000)
     fin.show()
-    // println(fin.queryExecution.logical.numberedTreeString)
-    // println("\n===================================\n")
-    // println(fin.queryExecution.optimizedPlan.numberedTreeString)
-    // println("\nExecuted Plan=====================\n")
-    // println(fin.queryExecution.executedPlan.numberedTreeString)
-    // println("\nSpark Plan=====================\n")
-    // println(fin.queryExecution.sparkPlan.numberedTreeString)
-    // println("\nStatistics=====================\n")
-    // println(fin.queryExecution.analyzed.statistics.sizeInBytes)
-    // println(df_item.queryExecution.analyzed.statistics.sizeInBytes)
-    // println(df_store_sales.queryExecution.analyzed.statistics.sizeInBytes)
-    println(fin.queryExecution.toString)
+    printExecutionPlan(fin)
+    // Running Kmeans clustering
+    // Need to find better way
+    val vectors = fin.rdd.map(s => Vectors.dense((s.get(0).toString)toDouble,(s.get(1).toString)toDouble,  (s.get(2).toString)toDouble, (s.get(3).toString)toDouble,(s.get(4).toString)toDouble,(s.get(5).toString)toDouble,(s.get(6).toString)toDouble,(s.get(7).toString)toDouble,(s.get(8).toString)toDouble,(s.get(9).toString)toDouble,(s.get(10).toString)toDouble,(s.get(11).toString)toDouble,(s.get(12).toString)toDouble,(s.get(13).toString)toDouble,(s.get(14).toString)toDouble, (s.get(15).toString)toDouble)).cache
+    val means = new KMeans().setK(8).setMaxIterations(20)
+    means.setInitializationMode(KMeans.RANDOM).setSeed(675234312453645L)
+    val clusterModel= means.run(vectors)
+    val wwge = clusterModel.computeCost(vectors)
+    val prediction= clusterModel.predict(vectors)
     println(":Done with Query 26")
+    var collectionTime = 0L;
+    for ( 	       garbageCollectorMXBean <- ManagementFactory.getGarbageCollectorMXBeans()) {
+        collectionTime +=  garbageCollectorMXBean.getCollectionTime();
+	}
+   println("Total time in gargbage collection : " + collectionTime)
   }
 }
