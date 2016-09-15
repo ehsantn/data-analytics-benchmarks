@@ -1,7 +1,8 @@
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.SparkContext._
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.Row
+import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.functions._
@@ -14,9 +15,12 @@ import org.apache.spark.sql.execution.joins._
 
 import org.apache.spark.ml.clustering.{KMeansModel, KMeans}
 import org.apache.spark.ml.linalg.{Vector, Vectors}
-import org.apache.spark.ml.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
-
+import org.apache.spark.sql._
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
+// import spark.implicits._
+import scala.language.reflectiveCalls
 import java.lang.management.ManagementFactory
 import scala.collection.JavaConversions._
 /**
@@ -44,11 +48,13 @@ object Query26 {
     println(fin.queryExecution.toString)
   }
   def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("Query")
-    val sc = new SparkContext(sparkConf)
-    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
-    sqlContext.setConf("spark.sql.autoBroadcastJoinThreshold","-1")
+    val spark = SparkSession
+      .builder()
+      .appName("Q26")
+      .config("spark.sql.autoBroadcastJoinThreshold", "-1")
+      .getOrCreate()
 
+    import spark.implicits._
     val table_store_slaes_path = args(0)
     val table_item_path = args(1)
     // Change this variable where sql is
@@ -57,14 +63,14 @@ object Query26 {
     val schema_store_sales = StructType(Array(
       StructField("ss_item_sk",IntegerType,true),
       StructField("ss_customer_sk",IntegerType,true)))
-    val df_store_sales = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load(table_store_slaes_path)
+    val df_store_sales = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load(table_store_slaes_path)
 
     val schema_item = StructType(Array(
       StructField("i_item_sk",IntegerType,true),
       StructField("i_class_id",IntegerType,true),
       StructField("i_category",StringType,true)))
 
-    val df_item = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load(table_item_path)
+    val df_item = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load(table_item_path)
     df_store_sales.registerTempTable("store_sales_table")
     df_item.registerTempTable("item_table")
     // collect() fails so using first()
@@ -73,7 +79,7 @@ object Query26 {
     // Starting time
     val t0 = System.currentTimeMillis
     val lines = scala.io.Source.fromFile(query_26_sql_path).mkString
-    val fin  = sqlContext.sql(lines)
+    val fin  = spark.sql(lines)
     // head to intiate lazy evaluation
     fin.cache.head
     val t1 = System.currentTimeMillis
@@ -85,7 +91,7 @@ object Query26 {
       s.getAs[Number](13).doubleValue, s.getAs[Number](14).doubleValue, s.getAs[Number](15).doubleValue)).cache
     // Clusters = 8  and Iterations 20
     val means = new KMeans().setK(8).setMaxIter(20)
-    means.setInitializationMode(KMeans.RANDOM).setSeed(675234312453645L)
+    means.setInitMode("RANDOM").setSeed(675234312453645L)
     val clusterModel= means.fit(ds)
     // head is called to initiate the lazy evaluation
     clusterModel.clusterCenters.head
