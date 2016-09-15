@@ -12,9 +12,9 @@ import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
 import org.apache.spark.sql.catalyst.TableIdentifier
 import org.apache.spark.sql.execution.joins._
 
-import org.apache.spark.mllib.clustering.{KMeansModel, KMeans}
-import org.apache.spark.mllib.linalg.{Vector, Vectors}
-import org.apache.spark.mllib.regression.LabeledPoint
+import org.apache.spark.ml.clustering.{KMeansModel, KMeans}
+import org.apache.spark.ml.linalg.{Vector, Vectors}
+import org.apache.spark.ml.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
 
 import java.lang.management.ManagementFactory
@@ -29,7 +29,7 @@ item table absolute path = args[1]
 
 */
 
-object Query26_mllib {
+object Query26 {
   // print the execution plance
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
@@ -52,7 +52,7 @@ object Query26_mllib {
     val table_store_slaes_path = args(0)
     val table_item_path = args(1)
     // Change this variable where sql is
-    val query_26_sql_path = "/home/whassan/spark-sql-query-tests/src/main/scala/q26.sql"
+    val query_26_sql_path = System.getProperty("user.home") + "/pse-hpc/spark-sql-query-tests/src/main/scala/q26.sql"
 
     val schema_store_sales = StructType(Array(
       StructField("ss_item_sk",IntegerType,true),
@@ -78,11 +78,15 @@ object Query26_mllib {
     fin.cache.head
     val t1 = System.currentTimeMillis
     // From spark website, there should be a good way
-    val vectors = fin.rdd.map(s => Vectors.dense((s.get(0).toString)toDouble,(s.get(1).toString)toDouble,  (s.get(2).toString)toDouble, (s.get(3).toString)toDouble,(s.get(4).toString)toDouble,(s.get(5).toString)toDouble,(s.get(6).toString)toDouble,(s.get(7).toString)toDouble,(s.get(8).toString)toDouble,(s.get(9).toString)toDouble,(s.get(10).toString)toDouble,(s.get(11).toString)toDouble,(s.get(12).toString)toDouble,(s.get(13).toString)toDouble,(s.get(14).toString)toDouble, (s.get(15).toString)toDouble)).cache
+    val ds = fin.map(s => Array(s.getAs[Number](1).doubleValue, s.getAs[Number](2).doubleValue, s.getAs[Number](3).doubleValue,
+      s.getAs[Number](4).doubleValue, s.getAs[Number](5).doubleValue, s.getAs[Number](6).doubleValue,
+      s.getAs[Number](7).doubleValue, s.getAs[Number](8).doubleValue, s.getAs[Number](9).doubleValue,
+      s.getAs[Number](10).doubleValue, s.getAs[Number](11).doubleValue, s.getAs[Number](12).doubleValue,
+      s.getAs[Number](13).doubleValue, s.getAs[Number](14).doubleValue, s.getAs[Number](15).doubleValue)).cache
     // Clusters = 8  and Iterations 20
-    val means = new KMeans().setK(8).setMaxIterations(20)
+    val means = new KMeans().setK(8).setMaxIter(20)
     means.setInitializationMode(KMeans.RANDOM).setSeed(675234312453645L)
-    val clusterModel= means.run(vectors)
+    val clusterModel= means.fit(ds)
     // head is called to initiate the lazy evaluation
     clusterModel.clusterCenters.head
     // Measure time
