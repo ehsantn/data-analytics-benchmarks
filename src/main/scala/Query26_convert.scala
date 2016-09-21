@@ -15,7 +15,6 @@ import org.apache.spark.sql.execution.joins._
 
 import org.apache.spark.ml.clustering.{KMeansModel, KMeans}
 import org.apache.spark.ml.linalg.{Vector, Vectors}
-import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
@@ -34,7 +33,7 @@ item table absolute path = args[1]
 
 */
 
-object Query26 {
+object Query26_convert {
   // print the execution plance
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
@@ -85,10 +84,11 @@ object Query26 {
     fin.cache.head
     val t1 = System.currentTimeMillis
     // From spark website, there should be a good way
-    val assembler = new VectorAssembler()
-      .setInputCols(Array("id1", "id2", "id3","id4","id5","id6","id7","id8","id9","id10","id11","id12","id13","id14","id15"))
-      .setOutputCol("features")
-    val ds = assembler.transform(fin)
+    val ds = fin.map(s => Array(s.getAs[Number](1).doubleValue, s.getAs[Number](2).doubleValue, s.getAs[Number](3).doubleValue,
+      s.getAs[Number](4).doubleValue, s.getAs[Number](5).doubleValue, s.getAs[Number](6).doubleValue,
+      s.getAs[Number](7).doubleValue, s.getAs[Number](8).doubleValue, s.getAs[Number](9).doubleValue,
+      s.getAs[Number](10).doubleValue, s.getAs[Number](11).doubleValue, s.getAs[Number](12).doubleValue,
+      s.getAs[Number](13).doubleValue, s.getAs[Number](14).doubleValue, s.getAs[Number](15).doubleValue)).cache
     // Clusters = 8  and Iterations 20
     val means = new KMeans().setK(8).setMaxIter(20)
     means.setInitMode("random").setSeed(675234312453645L)

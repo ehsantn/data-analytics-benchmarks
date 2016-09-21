@@ -17,7 +17,7 @@ SELECT
   count(CASE WHEN i.i_class_id=15 THEN 1 ELSE NULL END) AS id15
 FROM store_sales_table ss
 INNER JOIN item_table i 
-  ON (ss.ss_item_sk = i.i_item_sk AND i.i_category IN ('90882')
+  ON (ss.ss_item_sk = i.i_item_sk AND i.i_category = 90882
   AND ss.ss_customer_sk IS NOT NULL
 )
 GROUP BY ss.ss_customer_sk
