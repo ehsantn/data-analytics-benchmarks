@@ -81,30 +81,51 @@ object Query25 {
     df_web_sales.cache().first()
     // Starting time
     val t0 = System.currentTimeMillis
-    val fin1 = spark.sql("""SELECT
+    val df1 = spark.sql("""SELECT
         ss_customer_sk          AS cid,
         count(distinct ss_ticket_number)   AS frequency,
         max(ss_sold_date_sk)               AS most_recent_date,
         SUM(ss_net_paid)                   AS amount
-        FROM store_sales_table ss
-        WHERE ss.ss_sold_date_sk > 33000
-        AND ss_customer_sk IS NOT NULL
+        FROM store_sales_table
+        WHERE ss_sold_date_sk > 33000
         GROUP BY ss_customer_sk
         """ )
+    val df2 = spark.sql("""SELECT
+        ws_bill_customer_sk                AS cid,
+        count(distinct ws_order_number)    AS frequency,
+        max(ws_sold_date_sk)               AS most_recent_date,
+        SUM(ws_net_paid)                   AS amount
+        FROM web_sales_table
+        WHERE ws_sold_date_sk > 33000
+        GROUP BY ws_bill_customer_sk
+        """ )
+    val df3 = df1.union(df2)
+    df3.registerTempTable("agg_sales")
+    val df4 = spark.sql("""SELECT
+        cid as cid,
+        CASE WHEN 37621 - max(most_recent_date) < 60 THEN 1.0 ELSE 0.0 END 
+        AS recency, -- 37621 == 2003-01-02
+        SUM(frequency) AS frequency, --total frequency
+        SUM(amount)    AS totalspend --total amount
+        FROM agg_sales
+        GROUP BY cid 
+        """ )
+
+
     // head to intiate lazy evaluation
-    fin1.cache.head
+    df4.cache.head
     val t1 = System.currentTimeMillis
     // From spark website, there should be a good way
-    //val assembler = new VectorAssembler()
-    //  .setInputCols(Array("cid","recency","frequency","totalspend"))
-    //  .setOutputCol("features")
-    //val ds = assembler.transform(fin)
+    val assembler = new VectorAssembler()
+      .setInputCols(Array("cid","recency","frequency","totalspend"))
+      .setOutputCol("features")
+    val ds = assembler.transform(df4)
     // Clusters = 8  and Iterations 20
-    //val means = new KMeans().setK(8).setMaxIter(20)
-    //means.setInitMode("random").setSeed(675234312453645L)
-    //val clusterModel= means.fit(ds)
+    val means = new KMeans().setK(8).setMaxIter(20)
+    means.setInitMode("random").setSeed(675234312453645L)
+    val clusterModel= means.fit(ds)
     // head is called to initiate the lazy evaluation
-    //clusterModel.clusterCenters.head
+    clusterModel.clusterCenters.head
     // Measure time
     println("****** Query 25 time(s) took: " + (t1 - t0).toFloat / 1000)
     println(":Done with Query 25")
