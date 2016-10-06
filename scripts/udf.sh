@@ -1,4 +1,4 @@
-SPARK_DIR=${HOME}/spark-2.0.0
+SPARK_DIR=${HOME}/spark-2.0.1
 data_path=${HOME}/tmp/
 benchmark_dir=${HOME}/pse-hpc/spark-sql-query-tests/
 
@@ -8,8 +8,8 @@ ${SPARK_DIR}/sbin/start-all.sh
 ${SPARK_DIR}/bin/spark-submit --conf spark.sql.autoBroadcastJoinThreshold=-1 $benchmark_dir/src/main/python/udf_v1.py $data_path/udf_large.csv &> tmp_spark_udf.txt
 ${SPARK_DIR}/bin/spark-submit --conf spark.sql.autoBroadcastJoinThreshold=-1 $benchmark_dir/src/main/python/udf_v2.py $data_path/udf_large.csv &> tmp_spark_udf2.txt
 
-${SPARK_DIR}/bin/spark-submit --conf spark.sql.autoBroadcastJoinThreshold=-1 --class Udf_v1 ${benchmark_dir}/target/scala-2.11/query26_2.11-0.1.jar $data_path/udf_large.csv &> tmp_spark_udf3.txt
-${SPARK_DIR}/bin/spark-submit --conf spark.sql.autoBroadcastJoinThreshold=-1 --class Udf_v2 ${benchmark_dir}/target/scala-2.11/query26_2.11-0.1.jar $data_path/udf_large.csv &> tmp_spark_udf4.txt
+${SPARK_DIR}/bin/spark-submit --conf spark.sql.autoBroadcastJoinThreshold=-1 --class Udf_v1 ${benchmark_dir}/target/scala-2.11/benchmarks_2.11-0.3.jar $data_path/udf_large.csv &> tmp_spark_udf3.txt
+${SPARK_DIR}/bin/spark-submit --conf spark.sql.autoBroadcastJoinThreshold=-1 --class Udf_v2 ${benchmark_dir}/target/scala-2.11/benchmarks_2.11-0.3.jar $data_path/udf_large.csv &> tmp_spark_udf4.txt
 
 ${SPARK_DIR}/sbin/stop-all.sh
 
