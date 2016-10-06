@@ -57,7 +57,7 @@ object Udf_v2 {
       StructField("x", DoubleType,true),
       StructField("y", DoubleType,true)))
 
-    val df_points = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_points).load(table_points_path)
+    val df_points = spark.read.schema(schema_points).csv(table_points_path)
 
     df_points.registerTempTable("points")
     df_points.cache().first()
