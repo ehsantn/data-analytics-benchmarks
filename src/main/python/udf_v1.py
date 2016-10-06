@@ -17,10 +17,10 @@ if __name__=="__main__":
     file_name = sys.argv[1]
     lines = sc.textFile(file_name)
     parts = lines.map(lambda l: l.split(","))
-    data = parts.map(lambda p: (p[0], p[1], p[2]))
-    schema = StructType(StructField("id",LongType(),True),\
+    data = parts.map(lambda p: (int(p[0]), float(p[1]), float(p[2])))
+    schema = StructType([StructField("id",LongType(),True),\
               StructField("x",DoubleType(),True),\
-              StructField("y",DoubleType(),True))
+              StructField("y",DoubleType(),True)])
     df = spark.createDataFrame(data, schema)
     df.cache().first()
     t1 = time.time()
@@ -34,5 +34,5 @@ if __name__=="__main__":
                     """)
     df1.cache().first()
     t2 = time.time()
-    print("UDF test v1 execution time %f" % (t2-t1))
+    print("UDF python test v1 execution time %f" % (t2-t1))
     spark.stop()
