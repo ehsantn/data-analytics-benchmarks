@@ -1,4 +1,5 @@
-
+binary/
+tmp*txt
 # Created by https://www.gitignore.io/api/sbt,scala,java
 
 ### SBT ###
