@@ -6,7 +6,6 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.functions._
-import com.databricks.spark.csv._
 import scala.language.existentials
 
 import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
@@ -63,14 +62,14 @@ object Query26_convert {
     val schema_store_sales = StructType(Array(
       StructField("ss_item_sk",IntegerType,true),
       StructField("ss_customer_sk",IntegerType,true)))
-    val df_store_sales = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load(table_store_slaes_path)
+    val df_store_sales = spark.read.schema(schema_store_sales).csv(table_store_slaes_path)
 
     val schema_item = StructType(Array(
       StructField("i_item_sk",IntegerType,true),
       StructField("i_class_id",IntegerType,true),
       StructField("i_category",LongType,true)))
 
-    val df_item = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load(table_item_path)
+    val df_item = spark.read.schema(schema_item).csv(table_item_path)
     df_store_sales.registerTempTable("store_sales_table")
     df_item.registerTempTable("item_table")
     // collect() fails so using first()

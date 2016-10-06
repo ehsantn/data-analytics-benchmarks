@@ -6,7 +6,6 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.functions._
-import com.databricks.spark.csv._
 import scala.language.existentials
 
 import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
@@ -65,14 +64,14 @@ object Query25 {
       StructField("ss_customer_sk", IntegerType,true),
       StructField("ss_ticket_number", IntegerType,true),
       StructField("ss_net_paid", DoubleType,true)))
-    val df_store_sales = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_store_sales).load(table_store_sales_path)
+    val df_store_sales = spark.read.schema(schema_store_sales).csv(table_store_sales_path)
 
     val schema_web_sales = StructType(Array(
       StructField("ws_sold_date_sk", IntegerType,true),
       StructField("ws_bill_customer_sk", IntegerType,true),
       StructField("ws_order_number", IntegerType,true),
       StructField("ws_net_paid", DoubleType,true)))
-    val df_web_sales = spark.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_web_sales).load(table_web_sales_path)
+    val df_web_sales = spark.read.schema(schema_web_sales).csv(table_web_sales_path)
 
     df_store_sales.registerTempTable("store_sales_table")
     df_web_sales.registerTempTable("web_sales_table")

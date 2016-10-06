@@ -5,7 +5,6 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.functions._
-import com.databricks.spark.csv._
 import scala.language.existentials
 
 import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
@@ -52,27 +51,27 @@ object Query05 {
       StructField("wcs_item_sk",IntegerType,true),
       StructField("wcs_user_sk",IntegerType,true)))
 
-    val df_web_clickstreams = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_web_clickstreams).load(table_web_clickstreams_path)
+    val df_web_clickstreams = sqlContext.read.schema(schema_web_clickstreams).csv(table_web_clickstreams_path)
     df_web_clickstreams.cache().count()
 
     val schema_item = StructType(Array(
       StructField("i_item_sk",IntegerType,true),
       StructField("i_category_id",IntegerType,true),
       StructField("i_category",LongType,true)))
-    val df_item = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_item).load(table_item_path)
+    val df_item = sqlContext.read.schema(schema_item).csv(table_item_path)
     df_item.cache().count()
 
     val schema_customer = StructType(Array(
       StructField("c_customer_sk",IntegerType,true),
       StructField("c_current_cdemo_sk",IntegerType,true)))
-    val df_customer = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_customer).load(table_customer_path)
+    val df_customer = sqlContext.read.schema(schema_customer).csv(table_customer_path)
     df_customer.cache().count()
 
     val schema_customer_demographics = StructType(Array(
       StructField("cd_demo_sk",IntegerType,true),
       StructField("cd_gender",IntegerType,true),
       StructField("cd_education_status",IntegerType,true)))
-    val df_customer_demographics = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").schema(schema_customer_demographics).load(table_customer_demographics_path)
+    val df_customer_demographics = sqlContext.read.schema(schema_customer_demographics).csv(table_customer_demographics_path)
     df_customer_demographics.cache().count()
 
     df_web_clickstreams.registerTempTable("web_clickstreams")
