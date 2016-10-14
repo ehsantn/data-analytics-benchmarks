@@ -15,5 +15,5 @@ ${SPARK_DIR}/sbin/stop-all.sh
 
 MPI_CONF="-genv I_MPI_ADJUST_ALLGATHERV 4  -genv I_MPI_ADJUST_ALLTOALLV 1 -genv I_MPI_FABRICS shm:dapl"
 
-mpirun ${MPI_CONF} -hosts psephi07-ib,psephi08-ib,psephi09-ib,psephi10-ib -n 144 -ppn  36 ${benchmark_dir}/binary/udf1 &> tmp_hpat_udf1.txt
-mpirun ${MPI_CONF} -hosts psephi07-ib,psephi08-ib,psephi09-ib,psephi10-ib -n 144 -ppn  36 ${benchmark_dir}/binary/udf2 &> tmp_hpat_udf2.txt
+mpirun ${MPI_CONF} -hosts psephi07-ib,psephi08-ib,psephi09-ib,psephi10-ib -n 144 -ppn 36 ./udf_v1 &> tmp_hpat_udf1.txt
+mpirun ${MPI_CONF} -hosts psephi07-ib,psephi08-ib,psephi09-ib,psephi10-ib -n 144 -ppn 36 ./udf_v2 &> tmp_hpat_udf2.txt

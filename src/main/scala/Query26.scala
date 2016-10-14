@@ -82,12 +82,13 @@ object Query26 {
     val fin  = spark.sql(lines)
     // head to intiate lazy evaluation
     fin.cache.head
-    val t1 = System.currentTimeMillis
     // From spark website, there should be a good way
     val assembler = new VectorAssembler()
       .setInputCols(Array("id1", "id2", "id3","id4","id5","id6","id7","id8","id9","id10","id11","id12","id13","id14","id15"))
       .setOutputCol("features")
     val ds = assembler.transform(fin)
+    ds.cache.first
+    val t1 = System.currentTimeMillis
     // Clusters = 8  and Iterations 20
     val means = new KMeans().setK(8).setMaxIter(20)
     means.setInitMode("random").setSeed(675234312453645L)

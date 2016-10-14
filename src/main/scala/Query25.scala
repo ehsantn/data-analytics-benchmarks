@@ -113,12 +113,13 @@ object Query25 {
 
     // head to intiate lazy evaluation
     df4.cache.head
-    val t1 = System.currentTimeMillis
     // From spark website, there should be a good way
     val assembler = new VectorAssembler()
       .setInputCols(Array("cid","recency","frequency","totalspend"))
       .setOutputCol("features")
     val ds = assembler.transform(df4)
+    ds.cache.first
+    val t1 = System.currentTimeMillis
     // Clusters = 8  and Iterations 20
     val means = new KMeans().setK(8).setMaxIter(20)
     means.setInitMode("random").setSeed(675234312453645L)
