@@ -112,7 +112,7 @@ object Query25 {
 
 
     // head to intiate lazy evaluation
-    df4.cache.head
+    //df4.cache.head
     // From spark website, there should be a good way
     val assembler = new VectorAssembler()
       .setInputCols(Array("cid","recency","frequency","totalspend"))
