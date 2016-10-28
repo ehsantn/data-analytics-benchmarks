@@ -62,8 +62,12 @@ object Cumsum {
     df_points.cache().first()
     // Starting time
     val t0 = System.currentTimeMillis
+    //val df1 = spark.sql("""SELECT
+    //    sum(x) OVER (order by id) AS cumsum
+    //    FROM points 
+    //    """ )
     val df1 = spark.sql("""SELECT
-        sum(x) OVER (order by id) AS cumsum
+        sum(x) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumsum
         FROM points 
         """ )
     // scala> val df10 = spark.sql("select sum(ss_item_count) over (order by id1) from ss")
