@@ -47,7 +47,7 @@ object SparkKMeans {
     //val K = args(1).toInt
     //val convergeDist = args(2).toDouble
     val lines = spark.read.textFile(System.getenv("HOME")+"/.julia/v0.5/HPAT/input_data/kmeans_large.csv").rdd
-    val data = lines.map(parseVector _).cache()
+    val data = lines.map(parseVector _).cache().first()
     val K = 5
     val iterations = 10
 
@@ -69,9 +69,9 @@ object SparkKMeans {
       println("Finished iteration " + i )
     }
 
+    val t1 = System.currentTimeMillis
     println("Final centers:")
     kPoints.foreach(println)
-    val t1 = System.currentTimeMillis
     println("*** Kmeans execution time(s) took: " + (t1 - t0).toFloat / 1000)
     spark.stop()
   }

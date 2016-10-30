@@ -13,7 +13,7 @@ object OneDSum {
       .appName("Spark Pi")
       .getOrCreate()
     val lines = spark.read.textFile(System.getenv("HOME")+"/.julia/v0.5/HPAT/input_data/1D_large.csv").rdd
-    val data = lines.map(parseVector _).cache()
+    val data = lines.map(parseVector _).cache().first()
     
     val t0 = System.currentTimeMillis
     val res = data.reduce(_ + _)

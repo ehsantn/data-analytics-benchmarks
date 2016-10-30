@@ -13,7 +13,7 @@ object OneDSumFilter {
       .appName("Spark Pi")
       .getOrCreate()
     val lines = spark.read.textFile(System.getenv("HOME")+"/.julia/v0.5/HPAT/input_data/1D_large.csv").rdd
-    val data = lines.map(parseVector _).cache()
+    val data = lines.map(parseVector _).cache().filter()
     
     val t0 = System.currentTimeMillis
     val res = data.map(p=> if (p>0.8) p else 0.0).reduce(_ + _)

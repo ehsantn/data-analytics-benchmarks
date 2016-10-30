@@ -40,7 +40,7 @@ object SparkLR {
     // val numSlices = if (args.length > 0) args(0).toInt else 2
     // val points = sc.parallelize(1 until N).map(generatePoint).cache()
     val lines = spark.read.textFile(System.getenv("HOME")+"/.julia/v0.5/HPAT/input_data/logistic_regression_64m.csv").rdd
-    val points = lines.map(parseVector _).cache()
+    val points = lines.map(parseVector _).cache().first()
 
     val t0 = System.currentTimeMillis()
     // Initialize w to a random value
@@ -59,8 +59,8 @@ object SparkLR {
       w -= gradient
     }
 
-    println("Final w: " + w)
     val t1 = System.currentTimeMillis()
+    println("Final w: " + w)
     val time = (t1-t0).toFloat/1000
     println("exec time "+(time)+"s")
     spark.stop()
