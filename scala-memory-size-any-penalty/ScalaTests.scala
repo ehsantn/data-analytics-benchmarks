@@ -15,13 +15,16 @@ object ScalaTests {
   }
 
   def test1() = {
-    val tlen = 100000000
+    //val tlen = 100000000
+    val tlen = 10000000
     var a = new Array[AnyVal](tlen)
     var b = new Array[Int](tlen)
 
+    val r = scala.util.Random
+
     for (i <- 0 to (tlen - 1)) {
-        a(i) = 1
-        b(i) = 1
+        a(i) = r.nextInt
+        b(i) = r.nextInt
     }
 
     print("Size of a = ")
@@ -79,7 +82,7 @@ object ScalaTests {
   }
 
   def main(args: Array[String]) {
-    test1()
+//    test1()
     test2()
   }
 }
