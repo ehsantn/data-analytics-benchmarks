@@ -7,4 +7,4 @@ SizeEstimator.class:	SizeEstimator.scala
 	scalac SizeEstimator.scala
 
 run:
-	scala -J-Xms256m -J-Xmx4096m -cp . ScalaTests	
+	scala -J-Xms4096m -J-Xmx8096m -J-verbose:gc -J-XX:+PrintGCTimeStamps -J-XX:+PrintGCDetails -cp . ScalaTests
