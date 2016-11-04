@@ -40,7 +40,8 @@ object SparkLR {
     // val numSlices = if (args.length > 0) args(0).toInt else 2
     // val points = sc.parallelize(1 until N).map(generatePoint).cache()
     val lines = spark.read.textFile(System.getenv("HOME")+"/.julia/v0.5/HPAT/input_data/logistic_regression_64m.csv").rdd
-    val points = lines.map(parseVector _).cache().first()
+    val points = lines.map(parseVector _).cache()
+    points.first()
 
     val t0 = System.currentTimeMillis()
     // Initialize w to a random value
