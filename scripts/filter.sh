@@ -15,7 +15,7 @@ ${SPARK_DIR}/sbin/stop-all.sh
 
 python3 $benchmark_dir/src/main/python/filter_pd.py $data_path/${file_name}.csv &> pandas_filter.txt
 
-julia $benchmark_dir/src/main/julia/filter_jldf.jl $data_path/${file_name}.csv &> julia_filter.txt
+julia $benchmark_dir/src/main/julia/filter_jldf.jl $data_path/${file_name}.hdf5 &> julia_filter.txt
 
 
 MPI_CONF="-genv I_MPI_ADJUST_ALLGATHERV 4  -genv I_MPI_ADJUST_ALLTOALLV 1 -genv I_MPI_FABRICS shm:dapl"
