@@ -1,6 +1,6 @@
 SPARK_DIR=${HOME}/spark-2.0.1
 data_path=${HOME}/tmp/
-benchmark_dir=${HOME}/pse-hpc/spark-sql-query-tests/
+benchmark_dir=${HOME}/pse-hpc/data-analytics-benchmarks/
 file_name=filter_2b
 
 ${SPARK_DIR}/sbin/stop-all.sh
