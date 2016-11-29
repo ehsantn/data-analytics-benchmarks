@@ -24,11 +24,11 @@ import scala.language.reflectiveCalls
 import java.lang.management.ManagementFactory
 import scala.collection.JavaConversions._
 /**
-Example1: demonstrating a simple function that is not hard-coded
+Example1: 
 */
 
 object FilterDF1 {
-  // print the execution plance
+  // print the execution plan
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
     println("\n===================================\n")
@@ -72,8 +72,7 @@ object FilterDF1 {
     // head to intiate lazy evaluation
     df1.cache.head
     val t1 = System.currentTimeMillis
-    // From spark website, there should be a good way
-   // Measure time
+    // Measure time
     println("****** FilterDF1 time(s) took: " + (t1 - t0).toFloat / 1000)
     println(":Done with FilterDF1")
   }

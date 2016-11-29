@@ -28,7 +28,7 @@ Example1: demonstrating a simple function that is not hard-coded
 */
 
 object SimpleMovingAvg {
-  // print the execution plance
+  // print the execution plan
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
     println("\n===================================\n")
@@ -78,8 +78,7 @@ object SimpleMovingAvg {
     // head to intiate lazy evaluation
     df1.cache.head
     val t1 = System.currentTimeMillis
-    // From spark website, there should be a good way
-   // Measure time
+    // Measure time
     println("****** SimpleMovingAvg time(s) took: " + (t1 - t0).toFloat / 1000)
     println(":Done with SimpleMovingAvg")
   }

@@ -28,7 +28,7 @@ Example1: demonstrating a simple function that is not hard-coded
 */
 
 object JoinDF2 {
-  // print the execution plance
+  // print the execution plan
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
     println("\n===================================\n")

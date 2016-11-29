@@ -45,8 +45,8 @@ object KernelScore3 {
         StructField("id", LongType,true),
         StructField("x", DoubleType,true),
         StructField("y", DoubleType,true)))
-
-    val df_points = spark.createDataFrame(rdd, schema_points).repartition(2*288)
+    val num_cores = 288
+    val df_points = spark.createDataFrame(rdd, schema_points).repartition(2*num_cores)
     df_points.registerTempTable("points")
     df_points.cache().first()
     val b = 0.5 // bandwidth
@@ -75,7 +75,6 @@ object KernelScore3 {
     val t0 = System.currentTimeMillis
     val res = spark.sql("select sum(scoreUDF(x)) from points").collect()
     val t1 = System.currentTimeMillis
-    // From spark website, there should be a good way
     // Measure time
     println("****** KernelScore3 time(s) took: " + (t1 - t0).toFloat / 1000)
     println(":Done with KernelScore3 ", res)

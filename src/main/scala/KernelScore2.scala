@@ -26,7 +26,7 @@ import scala.collection.JavaConversions._
 */
 
 object KernelScore2 {
-  // print the execution plance
+  // print the execution plan
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
     println("\n===================================\n")
@@ -87,7 +87,6 @@ object KernelScore2 {
     val t0 = System.currentTimeMillis
     val res = spark.sql("select sum(scoreUDF(x)) from points").collect()
     val t1 = System.currentTimeMillis
-    // From spark website, there should be a good way
     // Measure time
     println("****** KernelScore2 time(s) took: " + (t1 - t0).toFloat / 1000)
     println(":Done with KernelScore2 ", res)

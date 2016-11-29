@@ -34,7 +34,7 @@ item table absolute path = args[1]
 */
 
 object Query26 {
-  // print the execution plance
+  // print the execution plan
   def printExecutionPlan(fin: DataFrame){
     println(fin.queryExecution.logical.numberedTreeString)
     println("\n===================================\n")
