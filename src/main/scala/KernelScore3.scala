@@ -39,16 +39,17 @@ object KernelScore3 {
         n = args(0).toInt
     println("table size: ",n)
 
-    val rdd = spark.sparkContext.parallelize(1 until n).map(_ => Row(
+    val num_cores = 288
+    val rdd = spark.sparkContext.parallelize(1 until n, 2*num_cores).map(_ => Row(
         scala.util.Random.nextInt(256).toLong,Math.random(),Math.random()))
     val schema_points = StructType(Array(
         StructField("id", LongType,true),
         StructField("x", DoubleType,true),
         StructField("y", DoubleType,true)))
-    val num_cores = 288
     val df_points = spark.createDataFrame(rdd, schema_points).repartition(2*num_cores)
     df_points.registerTempTable("points")
     df_points.cache().first()
+    println("input read done")
     val b = 0.5 // bandwidth
     val points = Array(-1.0, 2.0, 5.0)
     val N = points.length
@@ -77,6 +78,6 @@ object KernelScore3 {
     val t1 = System.currentTimeMillis
     // Measure time
     println("****** KernelScore3 time(s) took: " + (t1 - t0).toFloat / 1000)
-    println(":Done with KernelScore3 ", res)
+    println(":Done with KernelScore3 ", res(0).get(0))
   }
 }
