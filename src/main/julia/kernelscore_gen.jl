@@ -1,4 +1,7 @@
 using HPAT
+using ParallelAccelerator
+ParallelAccelerator.ParallelIR.PIRLateSimplify(true)
+ParallelAccelerator.ParallelIR.PIRHoistParfors(true)
 
 @acc hpat function kernelscore_test(n)
     X = rand(n)

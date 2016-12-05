@@ -23,11 +23,12 @@ int main(int argc, char *argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &pes);
     int64_t div = n/pes;
     int64_t chunk = (node_id==pes-1) ? n-node_id*div : div;
-    double out;
-    printf("generating data: %lld\n", chunk);
+    double out, all_res;
+    // printf("generating data: %lld\n", chunk);
     double* X = gen_data(chunk);
     double t1 = MPI_Wtime();
     out = kernel_score(X, chunk);
+    MPI_Allreduce(&all_res, &out, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
     double t2 = MPI_Wtime();
     if (node_id==0) printf("res:%lf exec time: %lf\n",out,t2-t1);
     MPI_Finalize();
