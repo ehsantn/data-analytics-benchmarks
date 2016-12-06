@@ -1,4 +1,3 @@
-Using configuration file at "/etc/bcpp/bcpp.cfg"
 #include <random>
 #include <mpi.h>
 #include <stdint.h>
@@ -210,12 +209,10 @@ void ppkernelscore_testp271(int64_t n, double * __restrict ret0)
 		;
 		SSAValue19 = cgen_distribution(cgen_rand_generator);
 		;
-		parallel_ir_array_temp__10_6_2 = SSAValue19;
-		arr.ARRAYELEM(((parfor_index_1_3) - (__hpat_loop_start_3)) + (1)) = parallel_ir_array_temp__10_6_2;
+		arr.ARRAYELEM(((parfor_index_1_3) - (__hpat_loop_start_3)) + (1)) = SSAValue19;
 	}
 	;
-	X = arr;
-	t1 = MPI_Wtime();
+    t1 = MPI_Wtime();
 	points = _Base_vect(-1.0,2.0,5.0);
 	exps = 0.0;
 	SSAValue13 = (1) <= (n);
@@ -238,7 +235,7 @@ void ppkernelscore_testp271(int64_t n, double * __restrict ret0)
 	for ( ppip273p280 = __hpat_loop_start_7; ppip273p280 <= (int64_t)__hpat_loop_end_7; ppip273p280 += 1)
 	{
 		;
-		SSAValue16pp1 = X.ARRAYELEM(((ppip273p280) - (__hpat_loop_start_7)) + (1));
+		SSAValue16pp1 = arr.ARRAYELEM(((ppip273p280) - (__hpat_loop_start_7)) + (1));
 		parallel_ir_new_array_name_17_1 = j2c_array<double>::new_j2c_array_1d(NULL, 3);
 		parallel_ir_reduction_output_36 = DBL_MAX;
 		for ( parfor_index_1_17 = 1; parfor_index_1_17 <= (int64_t)parallel_ir_save_array_len_1_17; parfor_index_1_17 += 1)
@@ -246,18 +243,10 @@ void ppkernelscore_testp271(int64_t n, double * __restrict ret0)
 			;
 			parallel_ir_array_temp__7_18_1 = points.ARRAYELEM(parfor_index_1_17);
 			SSAValue30 = (SSAValue16pp1) - (parallel_ir_array_temp__7_18_1);
-			parallel_ir_array_temp__24_20_1 = SSAValue30;
-			parallel_ir_array_temp_SSAValue17_22_1 = SSAValue30;
-			SSAValue32 = pow(parallel_ir_array_temp_SSAValue17_22_1, SSAValue31);
-			parallel_ir_array_temp_SSAValue17_24_2 = SSAValue32;
-			parallel_ir_array_temp_SSAValue18_27_1 = SSAValue32;
+			SSAValue32 = pow(SSAValue30, SSAValue31);
 			SSAValue33 = -(SSAValue32);
-			parallel_ir_array_temp_SSAValue18_29_2 = SSAValue33;
-			parallel_ir_array_temp_SSAValue2_32_1 = SSAValue33;
 			SSAValue34 = (SSAValue33) / (SSAValue25pp2);
-			parallel_ir_array_temp_SSAValue2_34_2 = SSAValue34;
 			parallel_ir_new_array_name_17_1.ARRAYELEM(parfor_index_1_17) = SSAValue34;
-			parallel_ir_array_temp__4_38_1 = SSAValue34;
 			SSAValue35 = SSAValue34;
 			SSAValue36 = parallel_ir_reduction_output_36;
 			SSAValue0 = (SSAValue36) < (0);
@@ -276,25 +265,18 @@ void ppkernelscore_testp271(int64_t n, double * __restrict ret0)
 			parallel_ir_reduction_output_36 = SSAValue10;
 		}
 		;
-		d = parallel_ir_new_array_name_17_1;
-		m = parallel_ir_reduction_output_36;
 		SSAValue22 = (parallel_ir_reduction_output_36) - (SSAValue21);
 		parallel_ir_reduction_output_50 = 0.0;
 		for ( parfor_index_1_41 = 1; parfor_index_1_41 <= (int64_t)parallel_ir_save_array_len_1_41; parfor_index_1_41 += 1)
 		{
 			;
-			parallel_ir_array_temp__4_42_1 = d.ARRAYELEM(parfor_index_1_41);
+			parallel_ir_array_temp__4_42_1 = parallel_ir_new_array_name_17_1.ARRAYELEM(parfor_index_1_41);
 			SSAValue12 = (parallel_ir_array_temp__4_42_1) - (parallel_ir_reduction_output_36);
-			parallel_ir_array_temp__4_44_2 = SSAValue12;
-			parallel_ir_array_temp_SSAValue31_46_1 = SSAValue12;
-			SSAValue15 = exp(parallel_ir_array_temp_SSAValue31_46_1);
-			parallel_ir_array_temp_SSAValue31_48_2 = SSAValue15;
-			parallel_ir_array_temp_SSAValue32_52_1 = SSAValue15;
+			SSAValue15 = exp(SSAValue12);
 			SSAValue17 = (parallel_ir_reduction_output_50) + (SSAValue15);
 			parallel_ir_reduction_output_50 = SSAValue17;
 		}
 		;
-		SSAValue29 = parallel_ir_reduction_output_50;
 		SSAValue23 = log(parallel_ir_reduction_output_50);;
 		SSAValue24 = (SSAValue22) + (SSAValue23);
 		exps = (exps) + (SSAValue24);
@@ -303,7 +285,7 @@ void ppkernelscore_testp271(int64_t n, double * __restrict ret0)
 	__hpat_reduce_2 = 0;
 	MPI_Allreduce(&exps, &__hpat_reduce_2, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
 	exps = __hpat_reduce_2;
-	t2 = MPI_Wtime();
+    t2 = MPI_Wtime();
 	*ret0 = exps;
 	return;
 
@@ -424,11 +406,9 @@ void ppkernelscore_testp271_unaliased(int64_t n, double * __restrict ret0)
 		;
 		SSAValue19 = cgen_distribution(cgen_rand_generator);
 		;
-		parallel_ir_array_temp__10_6_2 = SSAValue19;
-		arr.ARRAYELEM(((parfor_index_1_3) - (__hpat_loop_start_3)) + (1)) = parallel_ir_array_temp__10_6_2;
+		arr.ARRAYELEM(((parfor_index_1_3) - (__hpat_loop_start_3)) + (1)) = SSAValue19;
 	}
 	;
-	X = arr;
 	points = _Base_vect(-1.0,2.0,5.0);
 	exps = 0.0;
 	SSAValue13 = (1) <= (n);
@@ -451,7 +431,7 @@ void ppkernelscore_testp271_unaliased(int64_t n, double * __restrict ret0)
 	for ( ppip273p280 = __hpat_loop_start_7; ppip273p280 <= (int64_t)__hpat_loop_end_7; ppip273p280 += 1)
 	{
 		;
-		SSAValue16pp1 = X.ARRAYELEM(((ppip273p280) - (__hpat_loop_start_7)) + (1));
+		SSAValue16pp1 = arr.ARRAYELEM(((ppip273p280) - (__hpat_loop_start_7)) + (1));
 		parallel_ir_new_array_name_17_1 = j2c_array<double>::new_j2c_array_1d(NULL, 3);
 		parallel_ir_reduction_output_36 = DBL_MAX;
 		for ( parfor_index_1_17 = 1; parfor_index_1_17 <= (int64_t)parallel_ir_save_array_len_1_17; parfor_index_1_17 += 1)
@@ -459,18 +439,10 @@ void ppkernelscore_testp271_unaliased(int64_t n, double * __restrict ret0)
 			;
 			parallel_ir_array_temp__7_18_1 = points.ARRAYELEM(parfor_index_1_17);
 			SSAValue30 = (SSAValue16pp1) - (parallel_ir_array_temp__7_18_1);
-			parallel_ir_array_temp__24_20_1 = SSAValue30;
-			parallel_ir_array_temp_SSAValue17_22_1 = SSAValue30;
-			SSAValue32 = pow(parallel_ir_array_temp_SSAValue17_22_1, SSAValue31);
-			parallel_ir_array_temp_SSAValue17_24_2 = SSAValue32;
-			parallel_ir_array_temp_SSAValue18_27_1 = SSAValue32;
+			SSAValue32 = pow(SSAValue30, SSAValue31);
 			SSAValue33 = -(SSAValue32);
-			parallel_ir_array_temp_SSAValue18_29_2 = SSAValue33;
-			parallel_ir_array_temp_SSAValue2_32_1 = SSAValue33;
 			SSAValue34 = (SSAValue33) / (SSAValue25pp2);
-			parallel_ir_array_temp_SSAValue2_34_2 = SSAValue34;
 			parallel_ir_new_array_name_17_1.ARRAYELEM(parfor_index_1_17) = SSAValue34;
-			parallel_ir_array_temp__4_38_1 = SSAValue34;
 			SSAValue35 = SSAValue34;
 			SSAValue36 = parallel_ir_reduction_output_36;
 			SSAValue0 = (SSAValue36) < (0);
@@ -489,25 +461,18 @@ void ppkernelscore_testp271_unaliased(int64_t n, double * __restrict ret0)
 			parallel_ir_reduction_output_36 = SSAValue10;
 		}
 		;
-		d = parallel_ir_new_array_name_17_1;
-		m = parallel_ir_reduction_output_36;
 		SSAValue22 = (parallel_ir_reduction_output_36) - (SSAValue21);
 		parallel_ir_reduction_output_50 = 0.0;
 		for ( parfor_index_1_41 = 1; parfor_index_1_41 <= (int64_t)parallel_ir_save_array_len_1_41; parfor_index_1_41 += 1)
 		{
 			;
-			parallel_ir_array_temp__4_42_1 = d.ARRAYELEM(parfor_index_1_41);
+			parallel_ir_array_temp__4_42_1 = parallel_ir_new_array_name_17_1.ARRAYELEM(parfor_index_1_41);
 			SSAValue12 = (parallel_ir_array_temp__4_42_1) - (parallel_ir_reduction_output_36);
-			parallel_ir_array_temp__4_44_2 = SSAValue12;
-			parallel_ir_array_temp_SSAValue31_46_1 = SSAValue12;
-			SSAValue15 = exp(parallel_ir_array_temp_SSAValue31_46_1);
-			parallel_ir_array_temp_SSAValue31_48_2 = SSAValue15;
-			parallel_ir_array_temp_SSAValue32_52_1 = SSAValue15;
+			SSAValue15 = exp(SSAValue12);
 			SSAValue17 = (parallel_ir_reduction_output_50) + (SSAValue15);
 			parallel_ir_reduction_output_50 = SSAValue17;
 		}
 		;
-		SSAValue29 = parallel_ir_reduction_output_50;
 		SSAValue23 = log(parallel_ir_reduction_output_50);;
 		SSAValue24 = (SSAValue22) + (SSAValue23);
 		exps = (exps) + (SSAValue24);
@@ -560,7 +525,7 @@ extern "C" void _ppkernelscore_testp271_unaliased_(int run_where, int64_t n , do
 		mainFile.close();
 		std::ofstream mainFileSh(newMainSh.str());
 		mainFileSh << "#!/bin/sh" << std::endl;
-		mainFileSh << "mpiicpc -O3 -std=c++11  -g   -fpic  -o " << newMainExe.str() << " " << newMain.str() << "  -lm " << std::endl;
+		mainFileSh << "mpiicpc -O3 -std=c++11 -I/usr/local/hdf5/include  -g   -fpic  -o " << newMainExe.str() << " " << newMain.str() << "  -lm " << std::endl;
 		mainFileSh.close();
 	}
 
@@ -606,7 +571,7 @@ extern "C" void _ppkernelscore_testp271_(int run_where, int64_t n , double* __re
 		mainFile.close();
 		std::ofstream mainFileSh(newMainSh.str());
 		mainFileSh << "#!/bin/sh" << std::endl;
-		mainFileSh << "mpiicpc -O3 -std=c++11  -g   -fpic  -o " << newMainExe.str() << " " << newMain.str() << "  -lm " << std::endl;
+		mainFileSh << "mpiicpc -O3 -std=c++11 -I/usr/local/hdf5/include  -g   -fpic  -o " << newMainExe.str() << " " << newMain.str() << "  -lm " << std::endl;
 		mainFileSh.close();
 	}
 
