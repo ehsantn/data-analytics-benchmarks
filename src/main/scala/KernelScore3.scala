@@ -39,7 +39,11 @@ object KernelScore3 {
         n = args(0).toInt
     println("table size: ",n)
 
-    val num_cores = 288
+    var num_cores = 288
+    if(args.length>1)
+        num_cores = args(1).toInt
+    println("total cores: ", num_cores)
+
     val rdd = spark.sparkContext.parallelize(1 until n, 2*num_cores).map(_ => Row(
         scala.util.Random.nextInt(256).toLong,Math.random(),Math.random()))
     val schema_points = StructType(Array(
