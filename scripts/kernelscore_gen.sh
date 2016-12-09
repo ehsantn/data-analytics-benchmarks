@@ -9,6 +9,8 @@ ${SPARK_DIR}/bin/spark-submit --class KernelScore3 ${benchmark_dir}/target/scala
 
 ${SPARK_DIR}/sbin/stop-all.sh
 
+scala -J-Xmx28g -classpath ${benchmark_dir}/target/scala-2.11/benchmarks_2.11-0.3.jar KernelScoreS $size
+
 echo -e "-1\n$size" > ./kernelscore_gen.data
 MPI_CONF="-genv I_MPI_ADJUST_ALLGATHERV 4  -genv I_MPI_ADJUST_ALLTOALLV 1 -genv I_MPI_FABRICS shm:dapl"
 
