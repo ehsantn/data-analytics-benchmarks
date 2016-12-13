@@ -60,9 +60,6 @@ object KernelScore2 {
             dis(idx) = -(x - z_k) * (x - z_k) / (2*b*b)
             idx += 1
         }
-        //val dis = points.map { z_k =>
-        //    -(x - z_k) * (x - z_k) / (2*b*b)
-        // }
         val minDis = dis.min
         var expSum = 0.0
         idx = 0
@@ -70,8 +67,6 @@ object KernelScore2 {
             expSum += math.exp(dis(idx)-minDis)
             idx += 1
         }
-        //val exps = dis.map(d => math.exp(d-minDis))
-        //minDis - math.log(b*N) + math.log(exps.sum)
         minDis - math.log(b*N) + math.log(expSum)
     }
     val schema_points = StructType(Array(

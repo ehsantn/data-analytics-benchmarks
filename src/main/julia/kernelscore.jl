@@ -8,7 +8,8 @@ using HPAT
     exps::Float64 = 0.0 
     @par exps(+) for i in 1:length(df[:x])
         d = -(df[:x][i]-points).^2./(2*b^2)
-        exps += minimum(d)-log(b*N)+log(sum(exp(d-minimum(d))))
+        m = minimum(d)
+        exps += m-log(b*N)+log(sum(exp(d-m)))
     end 
     return exps
 end
