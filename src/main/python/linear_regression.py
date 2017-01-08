@@ -1,14 +1,14 @@
+from __future__ import print_function
 import sys
 import time
 import numpy as np
-import os
 from pyspark import SparkContext
-
 
 if __name__ == "__main__":
 
-    sc = SparkContext(appName="LR")
-    D = 10  # Number of dimensions
+    sc = SparkContext(appName="PythonLR")
+    D = 10
+    p = 2
     iterations = 20
     N = 10
     if len(sys.argv)>1:
@@ -19,20 +19,17 @@ if __name__ == "__main__":
         D = int(sys.argv[3])
     print("N %d D %d iterations %d" %(N,D,iterations))
 
-    points = sc.parallelize(range(1,N)).mapPartitions(lambda r: [np.random.ranf(size=(len(list(r)),D+1))])
-
-    points.cache().first()
+    points = sc.parallelize(range(1,N)).mapPartitions(lambda r: [np.random.ranf(size=(len(list(r)),D+p))])
+    a = points.cache().first()
     start = time.time()
-
-    w = 2 * np.random.ranf(size=D) - 1
+    alphaN = 0.01/N
+    w = np.zeros(shape=(3,2))
     print("Initial w: " + str(w))
 
-    # Compute logistic regression gradient for a matrix of data points
     def gradient(matrix, w):
-        Y = matrix[:, 0]    # point labels (first column of input file)
-        X = matrix[:, 1:]   # point coordinates
-        # For each point (x, y), compute gradient function, then sum these up
-        return ((1.0 / (1.0 + np.exp(-Y * X.dot(w))) - 1.0) * Y * X.T).sum(1)
+        Y = matrix[:, 0:1]
+        X = matrix[:, 2:]
+        return alphaN * X.T.dot(X.dot(w)-Y)
 
     def add(x, y):
         x += y
@@ -42,7 +39,7 @@ if __name__ == "__main__":
         print("On iteration %i" % (i + 1))
         w -= points.map(lambda m: gradient(m, w)).reduce(add)
 
+    print("linear regression exec time %f" % (time.time()-start))
     print("Final w: " + str(w))
 
-    print("lr exec time %f" % (time.time()-start))
     sc.stop()
