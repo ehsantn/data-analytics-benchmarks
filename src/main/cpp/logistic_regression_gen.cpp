@@ -120,6 +120,7 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 	__hpat_loop_start_59 = ((__hpat_node_id) * (__hpat_loop_div_59)) + (1);
 	__hpat_loop_end_59 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_59);
 	_pa_rand_gen_arr = j2c_array<double>::new_j2c_array_1d(NULL, N);
+	#pragma simd
 	for ( parfor_index_1_59 = __hpat_loop_start_59; parfor_index_1_59 <= (int64_t)__hpat_loop_end_59; parfor_index_1_59 += 1)
 	{
 		;
@@ -138,6 +139,7 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 	__hpat_loop_start_63 = ((__hpat_node_id) * (__hpat_loop_div_63)) + (1);
 	__hpat_loop_end_63 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_63);
 	pp_pa_rand_gen_arr_12p280 = j2c_array<double>::new_j2c_array_2d(NULL, 10, N);
+	#pragma simd
 	for ( parfor_index_2_63 = __hpat_loop_start_63; parfor_index_2_63 <= (int64_t)__hpat_loop_end_63; parfor_index_2_63 += 1)
 	{
 		for ( parfor_index_1_63 = 1; parfor_index_1_63 <= (int64_t)10; parfor_index_1_63 += 1)
@@ -177,7 +179,8 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 	__hpat_loop_start_118 = ((__hpat_node_id) * (__hpat_loop_div_118)) + (1);
 	__hpat_loop_end_118 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_118);
 	SSAValue9 = j2c_array<double>::new_j2c_array_2d(NULL, 1, N);
-	memset(SSAValue9.data, 0, sizeof(double)*SSAValue9.ARRAYLEN());
+	memset(SSAValue9.data, 0, sizeof(double)*(10) * (1));
+	#pragma simd
 	for ( _dist_parfor_112_index1 = __hpat_loop_start_118; _dist_parfor_112_index1 <= (int64_t)__hpat_loop_end_118; _dist_parfor_112_index1 += 1)
 	{
 		for ( _dist_parfor_113_index2 = 1; _dist_parfor_113_index2 <= (int64_t)1; _dist_parfor_113_index2 += 1)

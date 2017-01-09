@@ -1,6 +1,8 @@
 using HPAT 
 using MPI
 using DocOpt
+HPAT.DistributedPass.DistOptimize(true)
+#HPAT.DistributedPass.set_debug_level(3)
 
 @acc hpat function logistic_regression(iterations, N)
     D = 10  # Number of features
