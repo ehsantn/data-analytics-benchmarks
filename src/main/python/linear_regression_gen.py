@@ -23,11 +23,11 @@ if __name__ == "__main__":
     a = points.cache().first()
     start = time.time()
     alphaN = 0.01/N
-    w = np.zeros(shape=(3,2))
+    w = np.zeros(shape=(D,p))
     print("Initial w: " + str(w))
 
     def gradient(matrix, w):
-        Y = matrix[:, 0:1]
+        Y = matrix[:, 0:2]
         X = matrix[:, 2:]
         return alphaN * X.T.dot(X.dot(w)-Y)
 
