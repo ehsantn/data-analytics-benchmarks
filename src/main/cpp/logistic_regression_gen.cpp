@@ -142,10 +142,10 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 		}
 	}
 	;
+	pp_pa_rand_gen_arr_14p282 = j2c_array<double>::new_j2c_array_1d(NULL, 10);
 	if ((__hpat_node_id == 0))
 	{
 		;
-		pp_pa_rand_gen_arr_14p282 = j2c_array<double>::new_j2c_array_1d(NULL, 10);
 		for ( parfor_index_1_67 = 1; parfor_index_1_67 <= (int64_t)10; parfor_index_1_67 += 1)
 		{
 			;
