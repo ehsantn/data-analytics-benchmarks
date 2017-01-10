@@ -5,11 +5,13 @@ int main(int argc, char *argv[]) {
     int runwhere;
     mainFileData >> runwhere;
      j2c_array< double > * ret0;
+    int64_t numCenter;
+    mainFileData >> numCenter;
     int64_t iterations;
     mainFileData >> iterations;
     int64_t N;
     mainFileData >> N;
-    _pplinear_regressionp271_(runwhere, iterations, N, &ret0, false);
+    _ppkmeansp271_(runwhere, numCenter, iterations, N, &ret0, false);
     MPI_Finalize();
     return 0;
 }

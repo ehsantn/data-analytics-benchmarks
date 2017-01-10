@@ -1,7 +1,7 @@
 #include "linear_regression_gen.cpp"
 int main(int argc, char *argv[]) {
     MPI_Init(&argc, &argv);
-    std::ifstream mainFileData("linear_regression.data", std::ios::in | std::ios::binary);
+    std::ifstream mainFileData("linear_regression_gen.data", std::ios::in | std::ios::binary);
     int runwhere;
     mainFileData >> runwhere;
      j2c_array< double > * ret0;
