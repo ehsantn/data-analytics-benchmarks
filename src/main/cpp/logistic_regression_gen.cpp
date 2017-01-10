@@ -174,7 +174,7 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 		__hpat_loop_div_118 = (N) / (__hpat_num_pes);
 		__hpat_loop_start_118 = ((__hpat_node_id) * (__hpat_loop_div_118)) + (1);
 		__hpat_loop_end_118 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_118);
-		SSAValue9 = j2c_array<double>::new_j2c_array_2d(NULL, 1, N);
+		SSAValue9 = j2c_array<double>::new_j2c_array_2d(NULL, 1, 10);
 		memset(SSAValue9.data, 0, sizeof(double)*(10) * (1));
 		#pragma simd
 		for ( _dist_parfor_112_index1 = __hpat_loop_start_118; _dist_parfor_112_index1 <= (int64_t)__hpat_loop_end_118; _dist_parfor_112_index1 += 1)

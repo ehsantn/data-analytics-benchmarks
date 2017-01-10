@@ -155,7 +155,7 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 		__hpat_loop_div_59 = (N) / (__hpat_num_pes);
 		__hpat_loop_start_59 = ((__hpat_node_id) * (__hpat_loop_div_59)) + (1);
 		__hpat_loop_end_59 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_59);
-		SSAValue12 = j2c_array<double>::new_j2c_array_2d(NULL, 4, N);
+		SSAValue12 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
 		memset(SSAValue12.data, 0, sizeof(double)*(10) * (4));
 		#pragma simd
 		for ( _dist_parfor_53_index1 = __hpat_loop_start_59; _dist_parfor_53_index1 <= (int64_t)__hpat_loop_end_59; _dist_parfor_53_index1 += 1)
