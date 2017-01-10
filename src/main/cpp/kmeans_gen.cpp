@@ -148,10 +148,10 @@ void ppkmeansp271(int64_t numCenter, int64_t iterNum, int64_t N,  j2c_array< dou
 		}
 	}
 	;
+	pp_pa_rand_gen_arr_17p283 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
 	if ((__hpat_node_id == 0))
 	{
 		;
-		pp_pa_rand_gen_arr_17p283 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
 		for ( parfor_index_2_21 = 1; parfor_index_2_21 <= (int64_t)numCenter; parfor_index_2_21 += 1)
 		{
 			for ( parfor_index_1_21 = 1; parfor_index_1_21 <= (int64_t)10; parfor_index_1_21 += 1)
