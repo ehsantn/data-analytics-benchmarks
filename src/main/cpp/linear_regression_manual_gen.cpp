@@ -62,10 +62,10 @@ double* linear_regression(int iterations, int D, int p, int64_t N)
         {
                 double wpp = 0.0;
                 for(int kk=0; kk<D; kk++)
-                    wpp += w[f*p+kk]*points[ind*D+kk];
+                    wpp += w[f+kk*p]*points[ind*D+kk];
                 double calc = alphaN*(wpp-labels[p*ind+f]);
                 for(int kk=0; kk<D; kk++)
-                    grad[f*p+kk] += calc*points[ind*D+kk];
+                    grad[f+kk*p] += calc*points[ind*D+kk];
 
         }
         MPI_Allreduce(grad, glob_grad, p*D, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);

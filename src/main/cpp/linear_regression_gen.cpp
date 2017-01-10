@@ -145,6 +145,7 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	}
 	;
 	w = SSAValue4;
+	double __hpat_t1 = MPI_Wtime();
 	label37 : ;
 	SSAValue9 = (ptempp == SSAValue8);
 	SSAValue10 = !(SSAValue9);
@@ -206,6 +207,7 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	w = parallel_ir_new_array_name_50_1;
 	goto label37;
 	label71 : ;
+	0; if(__hpat_node_id==0) printf("exec time %lf\n", MPI_Wtime()-__hpat_t1);;
 	*ret0 = w;
 	return;
 
