@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     sc = SparkContext(appName="PythonLR")
     D = 10
-    p = 2
+    p = 4
     iterations = 20
     N = 10
     if len(sys.argv)>1:
@@ -17,7 +17,9 @@ if __name__ == "__main__":
         iterations = int(sys.argv[2])
     if len(sys.argv)>3:
         D = int(sys.argv[3])
-    print("N %d D %d iterations %d" %(N,D,iterations))
+    if len(sys.argv)>4:
+        p = int(sys.argv[4])
+    print("N %d D %d iterations %d p %d" %(N,D,iterations,p))
 
     points = sc.parallelize(range(1,N)).mapPartitions(lambda r: [np.random.ranf(size=(len(list(r)),D+p))])
     a = points.cache().first()
