@@ -4,27 +4,26 @@ using DocOpt
 HPAT.DistributedPass.DistOptimize(true)
 #HPAT.DistributedPass.set_debug_level(3)
 
-@acc hpat function logistic_regression(iterations, N)
+@acc hpat function linear_regression(iterations, N)
     D = 10  # Number of features
-    labels = rand(1,N)
+    p = 4
+    labels = rand(p,N)
     points = rand(D,N)
-    w = reshape(2.0.*rand(D)-1.0,1,D)
-    tic()
+    w = zeros(p,D)
+    alphaN = 0.01/N
+
     for i in 1:iterations
-       w -= ((1.0./(1.0.+exp(-labels.*(w*points))).-1.0).*labels)*points'
+       w -= alphaN*((w*points)-labels)*points'
     end
-    toc()
     w
 end
 
 function main()
-    doc = """logistic_regression.jl
-
-Logistic regression statistical method.
+    doc = """linear regression statistical method.
 
 Usage:
-  logistic_regression.jl -h | --help
-  logistic_regression.jl [--iterations=<iterations>] [--instances=<instances>]
+  linear_regression.jl -h | --help
+  linear_regression.jl [--iterations=<iterations>] [--instances=<instances>]
 
 Options:
   -h --help                  Show this screen.
@@ -38,14 +37,12 @@ Options:
     if (arguments["--iterations"] != nothing)
         iterations = parse(Int, arguments["--iterations"])
     end
-
+    
     if (arguments["--instances"] != nothing)
         instances = parse(Int, arguments["--instances"])
     end
 
-    rank = MPI.Comm_rank(MPI.COMM_WORLD)
-
-    W = logistic_regression(iterations, instances)
+    W = linear_regression(iterations, instances)
 
     if MPI.Comm_rank(MPI.COMM_WORLD)==0 println("result = ", W) end
 end
