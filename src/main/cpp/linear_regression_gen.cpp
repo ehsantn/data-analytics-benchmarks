@@ -76,16 +76,22 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	double _dist_gemm_tmp3_65;
 	int32_t __hpat_num_pes;
 	int32_t __hpat_node_id;
+	int64_t __hpat_dist_arr_start_67;
+	int64_t __hpat_dist_arr_div_67;
+	int64_t __hpat_dist_arr_count_67;
 	int64_t __hpat_loop_start_29;
 	int64_t __hpat_loop_end_29;
 	int64_t __hpat_loop_div_29;
+	int64_t __hpat_dist_arr_start_68;
+	int64_t __hpat_dist_arr_div_68;
+	int64_t __hpat_dist_arr_count_68;
 	int64_t __hpat_loop_start_33;
 	int64_t __hpat_loop_end_33;
 	int64_t __hpat_loop_div_33;
 	int64_t __hpat_loop_start_59;
 	int64_t __hpat_loop_end_59;
 	int64_t __hpat_loop_div_59;
-	j2c_array< double >  __hpat_reduce_67;
+	j2c_array< double >  __hpat_reduce_69;
 	std::random_device cgen_rand_device;
 	std::uniform_real_distribution<double> cgen_distribution(0.0,1.0);
 	std::normal_distribution<double> cgen_n_distribution(0.0,1.0);
@@ -104,7 +110,10 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	__hpat_loop_div_29 = (N) / (__hpat_num_pes);
 	__hpat_loop_start_29 = ((__hpat_node_id) * (__hpat_loop_div_29)) + (1);
 	__hpat_loop_end_29 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_29);
-	_pa_rand_gen_arr = j2c_array<double>::new_j2c_array_2d(NULL, 4, N);
+	__hpat_dist_arr_div_67 = (N) / (__hpat_num_pes);
+	__hpat_dist_arr_start_67 = (__hpat_node_id) * (__hpat_dist_arr_div_67);
+	__hpat_dist_arr_count_67 = ((__hpat_node_id==__hpat_num_pes-1) ? N-__hpat_node_id*__hpat_dist_arr_div_67 : __hpat_dist_arr_div_67);
+	_pa_rand_gen_arr = j2c_array<double>::new_j2c_array_2d(NULL, 4, __hpat_dist_arr_count_67);
 	#pragma simd
 	for ( parfor_index_2_29 = __hpat_loop_start_29; parfor_index_2_29 <= (int64_t)__hpat_loop_end_29; parfor_index_2_29 += 1)
 	{
@@ -120,7 +129,10 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	__hpat_loop_div_33 = (N) / (__hpat_num_pes);
 	__hpat_loop_start_33 = ((__hpat_node_id) * (__hpat_loop_div_33)) + (1);
 	__hpat_loop_end_33 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_33);
-	pp_pa_rand_gen_arr_14p276 = j2c_array<double>::new_j2c_array_2d(NULL, 10, N);
+	__hpat_dist_arr_div_68 = (N) / (__hpat_num_pes);
+	__hpat_dist_arr_start_68 = (__hpat_node_id) * (__hpat_dist_arr_div_68);
+	__hpat_dist_arr_count_68 = ((__hpat_node_id==__hpat_num_pes-1) ? N-__hpat_node_id*__hpat_dist_arr_div_68 : __hpat_dist_arr_div_68);
+	pp_pa_rand_gen_arr_14p276 = j2c_array<double>::new_j2c_array_2d(NULL, 10, __hpat_dist_arr_count_68);
 	#pragma simd
 	for ( parfor_index_2_33 = __hpat_loop_start_33; parfor_index_2_33 <= (int64_t)__hpat_loop_end_33; parfor_index_2_33 += 1)
 	{
@@ -144,7 +156,6 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	}
 	;
 	w = SSAValue4;
-	double __hpat_t1 = MPI_Wtime();
 	while (1)
 	{
 		;
@@ -189,9 +200,9 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 			}
 		}
 		;
-		__hpat_reduce_67 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
-		MPI_Allreduce(SSAValue12.data, __hpat_reduce_67.data, (4) * (10), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
-		SSAValue12 = __hpat_reduce_67;
+		__hpat_reduce_69 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
+		MPI_Allreduce(SSAValue12.data, __hpat_reduce_69.data, (4) * (10), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
+		SSAValue12 = __hpat_reduce_69;
 		parallel_ir_new_array_name_50_1 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
 		for ( parfor_index_2_50 = 1; parfor_index_2_50 <= (int64_t)10; parfor_index_2_50 += 1)
 		{
@@ -208,7 +219,6 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 		w = parallel_ir_new_array_name_50_1;
 	}
 	;
-	0; if(__hpat_node_id==0) printf("exec time %lf\n", MPI_Wtime()-__hpat_t1);;
 	*ret0 = w;
 	return;
 
