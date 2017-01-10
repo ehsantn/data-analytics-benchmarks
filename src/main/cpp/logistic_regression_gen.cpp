@@ -28,16 +28,14 @@ typedef struct
 void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >  * __restrict ret0)
 {
 	ppplogistic_regressionp271 pselfp;
-	j2c_array< double >  labels;
 	j2c_array< double >  w;
 	int64_t ptempp;
 	j2c_array< double >  _pa_rand_gen_arr;
 	j2c_array< double >  pp_pa_rand_gen_arr_12p280;
 	j2c_array< double >  pp_pa_rand_gen_arr_14p282;
-	j2c_array< double >  SSAValue15;
-	j2c_array< double >  SSAValue21;
-	int64_t SSAValue24;
-	TupleInt64Int64 SSAValue1;
+	j2c_array< double >  SSAValue17;
+	j2c_array< double >  SSAValue23;
+	int64_t SSAValue0;
 	TupleInt64Int64 SSAValue2;
 	bool SSAValue3;
 	int64_t SSAValue4;
@@ -47,32 +45,33 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 	j2c_array< double >  SSAValue8;
 	j2c_array< double >  SSAValue9;
 	int64_t parfor_index_1_59;
-	double SSAValue11;
+	int64_t parfor_index_2_59;
+	double SSAValue10;
 	int64_t parfor_index_1_63;
 	int64_t parfor_index_2_63;
-	double SSAValue12;
+	double SSAValue11;
 	int64_t parfor_index_1_67;
 	double SSAValue13;
 	double SSAValue14;
-	double SSAValue16;
-	double parallel_ir_array_temp__5_80_1;
+	double SSAValue15;
+	double parallel_ir_array_temp__10_80_1;
 	int64_t parfor_index_1_79;
 	int64_t parfor_index_2_79;
-	double SSAValue17;
+	double SSAValue16;
 	j2c_array< double >  parallel_ir_new_array_name_79_1;
-	double parallel_ir_array_temp_SSAValue45_85_1;
+	double parallel_ir_array_temp_SSAValue47_85_1;
 	double SSAValue18;
 	double SSAValue19;
 	double SSAValue20;
+	double SSAValue21;
 	double SSAValue22;
-	double SSAValue23;
-	double parallel_ir_array_temp__5_106_1;
-	double SSAValue0;
+	double parallel_ir_array_temp__10_106_1;
+	double SSAValue1;
 	double parallel_ir_array_temp__7_110_1;
-	double parallel_ir_array_temp_SSAValue53_111_1;
+	double parallel_ir_array_temp_SSAValue55_111_1;
 	int64_t parfor_index_1_109;
 	int64_t parfor_index_2_109;
-	double SSAValue10;
+	double SSAValue12;
 	j2c_array< double >  parallel_ir_new_array_name_109_1;
 	int64_t _dist_parfor_112_index1;
 	int64_t _dist_parfor_113_index2;
@@ -91,18 +90,14 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 	int64_t __hpat_loop_start_59;
 	int64_t __hpat_loop_end_59;
 	int64_t __hpat_loop_div_59;
-	int64_t __hpat_dist_arr_start_126;
-	int64_t __hpat_dist_arr_div_126;
-	int64_t __hpat_dist_arr_count_126;
-	TupleInt64Int64 __hpat_dist_tup_var_126;
 	int64_t __hpat_loop_start_63;
 	int64_t __hpat_loop_end_63;
 	int64_t __hpat_loop_div_63;
-	int64_t __hpat_bcast_size_74;
+	int64_t __hpat_bcast_size_75;
 	int64_t __hpat_loop_start_118;
 	int64_t __hpat_loop_end_118;
 	int64_t __hpat_loop_div_118;
-	j2c_array< double >  __hpat_reduce_127;
+	j2c_array< double >  __hpat_reduce_126;
 	std::random_device cgen_rand_device;
 	std::uniform_real_distribution<double> cgen_distribution(0.0,1.0);
 	std::normal_distribution<double> cgen_n_distribution(0.0,1.0);
@@ -110,30 +105,26 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 	;;
 	MPI_Comm_size(MPI_COMM_WORLD,&__hpat_num_pes);;
 	MPI_Comm_rank(MPI_COMM_WORLD,&__hpat_node_id);;
-	SSAValue1 = TupleInt64Int64{1, N};
 	SSAValue2 = TupleInt64Int64{1, 10};
 	SSAValue3 = (1) <= (iterations);
 	SSAValue4 = (1) - (1);
-	SSAValue24 = (SSAValue3) ? (iterations) : (SSAValue4);
-	SSAValue5 = (SSAValue24) + (1);
+	SSAValue0 = (SSAValue3) ? (iterations) : (SSAValue4);
+	SSAValue5 = (SSAValue0) + (1);
 	__hpat_loop_div_59 = (N) / (__hpat_num_pes);
 	__hpat_loop_start_59 = ((__hpat_node_id) * (__hpat_loop_div_59)) + (1);
 	__hpat_loop_end_59 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_59);
-	_pa_rand_gen_arr = j2c_array<double>::new_j2c_array_1d(NULL, N);
+	_pa_rand_gen_arr = j2c_array<double>::new_j2c_array_2d(NULL, 1, N);
 	#pragma simd
-	for ( parfor_index_1_59 = __hpat_loop_start_59; parfor_index_1_59 <= (int64_t)__hpat_loop_end_59; parfor_index_1_59 += 1)
+	for ( parfor_index_2_59 = __hpat_loop_start_59; parfor_index_2_59 <= (int64_t)__hpat_loop_end_59; parfor_index_2_59 += 1)
 	{
-		;
-		SSAValue11 = cgen_distribution(cgen_rand_generator);
-		;
-		_pa_rand_gen_arr.ARRAYELEM(((parfor_index_1_59) - (__hpat_loop_start_59)) + (1)) = SSAValue11;
+		for ( parfor_index_1_59 = 1; parfor_index_1_59 <= (int64_t)1; parfor_index_1_59 += 1)
+		{
+			;
+			SSAValue10 = cgen_distribution(cgen_rand_generator);
+			;
+			_pa_rand_gen_arr.ARRAYELEM(parfor_index_1_59,((parfor_index_2_59) - (__hpat_loop_start_59)) + (1)) = SSAValue10;
+		}
 	}
-	;
-	__hpat_dist_arr_div_126 = (N) / (__hpat_num_pes);
-	__hpat_dist_arr_start_126 = (__hpat_node_id) * (__hpat_dist_arr_div_126);
-	__hpat_dist_arr_count_126 = ((__hpat_node_id==__hpat_num_pes-1) ? N-__hpat_node_id*__hpat_dist_arr_div_126 : __hpat_dist_arr_div_126);
-	__hpat_dist_tup_var_126 = TupleInt64Int64{1, __hpat_dist_arr_count_126};
-	labels = _pa_rand_gen_arr.reshape(__hpat_dist_tup_var_126.f0,__hpat_dist_tup_var_126.f1);
 	;
 	__hpat_loop_div_63 = (N) / (__hpat_num_pes);
 	__hpat_loop_start_63 = ((__hpat_node_id) * (__hpat_loop_div_63)) + (1);
@@ -145,98 +136,103 @@ void pplogistic_regressionp271(int64_t iterations, int64_t N,  j2c_array< double
 		for ( parfor_index_1_63 = 1; parfor_index_1_63 <= (int64_t)10; parfor_index_1_63 += 1)
 		{
 			;
-			SSAValue12 = cgen_distribution(cgen_rand_generator);
+			SSAValue11 = cgen_distribution(cgen_rand_generator);
 			;
-			pp_pa_rand_gen_arr_12p280.ARRAYELEM(parfor_index_1_63,((parfor_index_2_63) - (__hpat_loop_start_63)) + (1)) = SSAValue12;
+			pp_pa_rand_gen_arr_12p280.ARRAYELEM(parfor_index_1_63,((parfor_index_2_63) - (__hpat_loop_start_63)) + (1)) = SSAValue11;
 		}
 	}
 	;
-	if (!((__hpat_node_id == 0))) goto label74;
-	pp_pa_rand_gen_arr_14p282 = j2c_array<double>::new_j2c_array_1d(NULL, 10);
-	for ( parfor_index_1_67 = 1; parfor_index_1_67 <= (int64_t)10; parfor_index_1_67 += 1)
+	if ((__hpat_node_id == 0))
 	{
 		;
-		SSAValue13 = cgen_distribution(cgen_rand_generator);
+		pp_pa_rand_gen_arr_14p282 = j2c_array<double>::new_j2c_array_1d(NULL, 10);
+		for ( parfor_index_1_67 = 1; parfor_index_1_67 <= (int64_t)10; parfor_index_1_67 += 1)
+		{
+			;
+			SSAValue13 = cgen_distribution(cgen_rand_generator);
+			;
+			SSAValue14 = (2.0) * (SSAValue13);
+			SSAValue15 = (SSAValue14) - (1.0);
+			pp_pa_rand_gen_arr_14p282.ARRAYELEM(parfor_index_1_67) = SSAValue15;
+		}
 		;
-		SSAValue14 = (2.0) * (SSAValue13);
-		SSAValue16 = (SSAValue14) - (1.0);
-		pp_pa_rand_gen_arr_14p282.ARRAYELEM(parfor_index_1_67) = SSAValue16;
 	}
 	;
-	label74 : ;
-	__hpat_bcast_size_74 = 10;
-	MPI_Bcast(pp_pa_rand_gen_arr_14p282.data, __hpat_bcast_size_74, MPI_DOUBLE, 0, MPI_COMM_WORLD);;
+	__hpat_bcast_size_75 = 10;
+	MPI_Bcast(pp_pa_rand_gen_arr_14p282.data, __hpat_bcast_size_75, MPI_DOUBLE, 0, MPI_COMM_WORLD);;
 	w = pp_pa_rand_gen_arr_14p282.reshape(SSAValue2.f0,SSAValue2.f1);
 	;
 	0; double __hpat_t1 = MPI_Wtime();
 	ptempp = 1;
-	label38 : ;
-	SSAValue6 = (ptempp == SSAValue5);
-	SSAValue7 = !(SSAValue6);
-	if (!(SSAValue7)) goto label73;
-	ptempp = (ptempp) + (1);
-	__hpat_loop_div_118 = (N) / (__hpat_num_pes);
-	__hpat_loop_start_118 = ((__hpat_node_id) * (__hpat_loop_div_118)) + (1);
-	__hpat_loop_end_118 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_118);
-	SSAValue9 = j2c_array<double>::new_j2c_array_2d(NULL, 1, N);
-	memset(SSAValue9.data, 0, sizeof(double)*(10) * (1));
-	#pragma simd
-	for ( _dist_parfor_112_index1 = __hpat_loop_start_118; _dist_parfor_112_index1 <= (int64_t)__hpat_loop_end_118; _dist_parfor_112_index1 += 1)
+	while (1)
 	{
-		for ( _dist_parfor_113_index2 = 1; _dist_parfor_113_index2 <= (int64_t)1; _dist_parfor_113_index2 += 1)
+		;
+		SSAValue6 = (ptempp == SSAValue5);
+		SSAValue7 = !(SSAValue6);
+		if (!(SSAValue7)) break;
+		ptempp = (ptempp) + (1);
+		__hpat_loop_div_118 = (N) / (__hpat_num_pes);
+		__hpat_loop_start_118 = ((__hpat_node_id) * (__hpat_loop_div_118)) + (1);
+		__hpat_loop_end_118 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_118);
+		SSAValue9 = j2c_array<double>::new_j2c_array_2d(NULL, 1, N);
+		memset(SSAValue9.data, 0, sizeof(double)*(10) * (1));
+		#pragma simd
+		for ( _dist_parfor_112_index1 = __hpat_loop_start_118; _dist_parfor_112_index1 <= (int64_t)__hpat_loop_end_118; _dist_parfor_112_index1 += 1)
 		{
-			;
-			_dist_gemm_tmp3_117 = 0;
-			for(int64_t _dist_loop_114_index = 1; _dist_loop_114_index <= 10; _dist_loop_114_index += 1)
+			for ( _dist_parfor_113_index2 = 1; _dist_parfor_113_index2 <= (int64_t)1; _dist_parfor_113_index2 += 1)
 			{
 				;
-				_dist_gemm_tmp1_115 = w.ARRAYELEM(_dist_parfor_113_index2,_dist_loop_114_index);
-				_dist_gemm_tmp2_116 = pp_pa_rand_gen_arr_12p280.ARRAYELEM(_dist_loop_114_index,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
-				_dist_gemm_tmp3_117 = (_dist_gemm_tmp3_117) + ((_dist_gemm_tmp1_115) * (_dist_gemm_tmp2_116));
+				_dist_gemm_tmp3_117 = 0;
+				for(int64_t _dist_loop_114_index = 1; _dist_loop_114_index <= 10; _dist_loop_114_index += 1)
+				{
+					;
+					_dist_gemm_tmp1_115 = w.ARRAYELEM(_dist_parfor_113_index2,_dist_loop_114_index);
+					_dist_gemm_tmp2_116 = pp_pa_rand_gen_arr_12p280.ARRAYELEM(_dist_loop_114_index,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
+					_dist_gemm_tmp3_117 = (_dist_gemm_tmp3_117) + ((_dist_gemm_tmp1_115) * (_dist_gemm_tmp2_116));
+				}
+				;
+				parallel_ir_array_temp__10_80_1 = _pa_rand_gen_arr.ARRAYELEM(_dist_parfor_113_index2,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
+				SSAValue16 = -(parallel_ir_array_temp__10_80_1);
+				parallel_ir_array_temp_SSAValue47_85_1 = _dist_gemm_tmp3_117;
+				SSAValue18 = (SSAValue16) * (parallel_ir_array_temp_SSAValue47_85_1);
+				SSAValue19 = exp(SSAValue18);
+				SSAValue20 = (1.0) + (SSAValue19);
+				SSAValue21 = (1.0) / (SSAValue20);
+				SSAValue22 = (SSAValue21) - (1.0);
+				parallel_ir_array_temp__10_106_1 = _pa_rand_gen_arr.ARRAYELEM(_dist_parfor_113_index2,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
+				SSAValue1 = (SSAValue22) * (parallel_ir_array_temp__10_106_1);
+				_dist_gemm_tmp2_123 = SSAValue1;
+				for(int64_t _dist_loop_121_index = 1; _dist_loop_121_index <= 10; _dist_loop_121_index += 1)
+				{
+					;
+					_dist_gemm_tmp1_122 = pp_pa_rand_gen_arr_12p280.ARRAYELEM(_dist_loop_121_index,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
+					_dist_gemm_tmp3_124 = SSAValue9.ARRAYELEM(_dist_parfor_113_index2,_dist_loop_121_index);
+					_dist_gemm_tmp3_124 = (_dist_gemm_tmp3_124) + ((_dist_gemm_tmp1_122) * (_dist_gemm_tmp2_123));
+					SSAValue9.ARRAYELEM(_dist_parfor_113_index2,_dist_loop_121_index) = _dist_gemm_tmp3_124;
+				}
+				;
 			}
-			;
-			parallel_ir_array_temp__5_80_1 = labels.ARRAYELEM(_dist_parfor_113_index2,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
-			SSAValue17 = -(parallel_ir_array_temp__5_80_1);
-			parallel_ir_array_temp_SSAValue45_85_1 = _dist_gemm_tmp3_117;
-			SSAValue18 = (SSAValue17) * (parallel_ir_array_temp_SSAValue45_85_1);
-			SSAValue19 = exp(SSAValue18);
-			SSAValue20 = (1.0) + (SSAValue19);
-			SSAValue22 = (1.0) / (SSAValue20);
-			SSAValue23 = (SSAValue22) - (1.0);
-			parallel_ir_array_temp__5_106_1 = labels.ARRAYELEM(_dist_parfor_113_index2,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
-			SSAValue0 = (SSAValue23) * (parallel_ir_array_temp__5_106_1);
-			_dist_gemm_tmp2_123 = SSAValue0;
-			for(int64_t _dist_loop_121_index = 1; _dist_loop_121_index <= 10; _dist_loop_121_index += 1)
+		}
+		;
+		__hpat_reduce_126 = j2c_array<double>::new_j2c_array_2d(NULL, 1, 10);
+		MPI_Allreduce(SSAValue9.data, __hpat_reduce_126.data, (1) * (10), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
+		SSAValue9 = __hpat_reduce_126;
+		parallel_ir_new_array_name_109_1 = j2c_array<double>::new_j2c_array_2d(NULL, 1, 10);
+		for ( parfor_index_2_109 = 1; parfor_index_2_109 <= (int64_t)10; parfor_index_2_109 += 1)
+		{
+			for ( parfor_index_1_109 = 1; parfor_index_1_109 <= (int64_t)1; parfor_index_1_109 += 1)
 			{
 				;
-				_dist_gemm_tmp1_122 = pp_pa_rand_gen_arr_12p280.ARRAYELEM(_dist_loop_121_index,((_dist_parfor_112_index1) - (__hpat_loop_start_118)) + (1));
-				_dist_gemm_tmp3_124 = SSAValue9.ARRAYELEM(_dist_parfor_113_index2,_dist_loop_121_index);
-				_dist_gemm_tmp3_124 = (_dist_gemm_tmp3_124) + ((_dist_gemm_tmp1_122) * (_dist_gemm_tmp2_123));
-				SSAValue9.ARRAYELEM(_dist_parfor_113_index2,_dist_loop_121_index) = _dist_gemm_tmp3_124;
+				parallel_ir_array_temp__7_110_1 = w.ARRAYELEM(parfor_index_1_109,parfor_index_2_109);
+				parallel_ir_array_temp_SSAValue55_111_1 = SSAValue9.ARRAYELEM(parfor_index_1_109,parfor_index_2_109);
+				SSAValue12 = (parallel_ir_array_temp__7_110_1) - (parallel_ir_array_temp_SSAValue55_111_1);
+				parallel_ir_new_array_name_109_1.ARRAYELEM(parfor_index_1_109,parfor_index_2_109) = SSAValue12;
 			}
-			;
 		}
+		;
+		w = parallel_ir_new_array_name_109_1;
 	}
 	;
-	__hpat_reduce_127 = j2c_array<double>::new_j2c_array_2d(NULL, 1, 10);
-	MPI_Allreduce(SSAValue9.data, __hpat_reduce_127.data, (1) * (10), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
-	SSAValue9 = __hpat_reduce_127;
-	parallel_ir_new_array_name_109_1 = j2c_array<double>::new_j2c_array_2d(NULL, 1, 10);
-	for ( parfor_index_2_109 = 1; parfor_index_2_109 <= (int64_t)10; parfor_index_2_109 += 1)
-	{
-		for ( parfor_index_1_109 = 1; parfor_index_1_109 <= (int64_t)1; parfor_index_1_109 += 1)
-		{
-			;
-			parallel_ir_array_temp__7_110_1 = w.ARRAYELEM(parfor_index_1_109,parfor_index_2_109);
-			parallel_ir_array_temp_SSAValue53_111_1 = SSAValue9.ARRAYELEM(parfor_index_1_109,parfor_index_2_109);
-			SSAValue10 = (parallel_ir_array_temp__7_110_1) - (parallel_ir_array_temp_SSAValue53_111_1);
-			parallel_ir_new_array_name_109_1.ARRAYELEM(parfor_index_1_109,parfor_index_2_109) = SSAValue10;
-		}
-	}
-	;
-	w = parallel_ir_new_array_name_109_1;
-	goto label38;
-	label73 : ;
 	0; if(__hpat_node_id==0) printf("exec time %lf\n", MPI_Wtime()-__hpat_t1);;
 	*ret0 = w;
 	return;

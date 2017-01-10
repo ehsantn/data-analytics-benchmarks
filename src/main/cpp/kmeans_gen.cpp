@@ -148,160 +148,173 @@ void ppkmeansp271(int64_t numCenter, int64_t iterNum, int64_t N,  j2c_array< dou
 		}
 	}
 	;
-	if (!((__hpat_node_id == 0))) goto label107;
-	pp_pa_rand_gen_arr_17p283 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
-	for ( parfor_index_2_21 = 1; parfor_index_2_21 <= (int64_t)numCenter; parfor_index_2_21 += 1)
-	{
-		for ( parfor_index_1_21 = 1; parfor_index_1_21 <= (int64_t)10; parfor_index_1_21 += 1)
-		{
-			;
-			SSAValue2 = cgen_distribution(cgen_rand_generator);
-			;
-			pp_pa_rand_gen_arr_17p283.ARRAYELEM(parfor_index_1_21,parfor_index_2_21) = SSAValue2;
-		}
-	}
-	;
-	label107 : ;
-	__hpat_bcast_size_107 = (10) * (numCenter);
-	MPI_Bcast(pp_pa_rand_gen_arr_17p283.data, __hpat_bcast_size_107, MPI_DOUBLE, 0, MPI_COMM_WORLD);;
-	centroids = pp_pa_rand_gen_arr_17p283;
-	0; double __hpat_t1 = MPI_Wtime();
-	ptempp = 1;
-	label30 : ;
-	SSAValue37 = (ptempp == SSAValue36);
-	SSAValue13 = !(SSAValue37);
-	if (!(SSAValue13)) goto label106;
-	ptempp = (ptempp) + (1);
-	__hpat_dist_arr_div_87 = (N) / (__hpat_num_pes);
-	__hpat_dist_arr_start_87 = (__hpat_node_id) * (__hpat_dist_arr_div_87);
-	__hpat_dist_arr_count_87 = ((__hpat_node_id==__hpat_num_pes-1) ? N-__hpat_node_id*__hpat_dist_arr_div_87 : __hpat_dist_arr_div_87);
-	SSAValue32 = j2c_array<int64_t>::new_j2c_array_1d(NULL, __hpat_dist_arr_count_87);
-	SSAValue0 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
-	__hpat_loop_div_25 = (N) / (__hpat_num_pes);
-	__hpat_loop_start_25 = ((__hpat_node_id) * (__hpat_loop_div_25)) + (1);
-	__hpat_loop_end_25 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_25);
-	HPAT__103_75 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
-	HPAT__109_75 = j2c_array<int64_t>::new_j2c_array_2d(NULL, 10, numCenter);
-	HPAT_SSAValue35_75 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
-	HPAT_SSAValue38_75 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
-	for(int64_t parfor_index_2_75 = 1; parfor_index_2_75 <= numCenter; parfor_index_2_75 += 1)
+	if ((__hpat_node_id == 0))
 	{
 		;
-		for(int64_t parfor_index_1_75 = 1; parfor_index_1_75 <= 10; parfor_index_1_75 += 1)
+		pp_pa_rand_gen_arr_17p283 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
+		for ( parfor_index_2_21 = 1; parfor_index_2_21 <= (int64_t)numCenter; parfor_index_2_21 += 1)
 		{
-			;
-			HPAT__103_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = 0.0;
-			HPAT__109_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = 0;
-		}
-		;
-	}
-	;
-	#pragma simd
-	for ( parfor_index_1_25 = __hpat_loop_start_25; parfor_index_1_25 <= (int64_t)__hpat_loop_end_25; parfor_index_1_25 += 1)
-	{
-		;
-		SSAValue8 = (1) <= (numCenter);
-		SSAValue9 = (1) - (1);
-		SSAValue6 = (SSAValue8) ? (numCenter) : (SSAValue9);
-		SSAValue10 = (SSAValue6) - (1);
-		SSAValue3 = (SSAValue10) + (1);
-		SSAValue4 = j2c_array<double>::new_j2c_array_1d(NULL, ((1) <= (numCenter)) ? (numCenter) : (0));
-		ppptemppp299 = 1;
-		ppptempp_5p287 = 1;
-		ppptempp_6p288 = 0;
-		label125 : ;
-		SSAValue11 = (ppptempp_6p288 == SSAValue3);
-		SSAValue12 = !(SSAValue11);
-		if (!(SSAValue12)) goto label157;
-		ppptempp_6p288 = (ppptempp_6p288) + (1);
-		SSAValue7 = (ppptempp_5p287) + (1);
-		ppjp300 = ppptempp_5p287;
-		ppptempp_5p287 = SSAValue7;
-		parallel_ir_new_array_name_46_1 = j2c_array<double>::new_j2c_array_1d(NULL, 10);
-		for ( parfor_index_1_46 = 1; parfor_index_1_46 <= (int64_t)10; parfor_index_1_46 += 1)
-		{
-			;
-			parallel_ir_temp__13_parallel_ir_range__41Int64_skip__43Int64_1_1_1 = _pa_rand_gen_arr.ARRAYELEM(parfor_index_1_46,((parfor_index_1_25) - (__hpat_loop_start_25)) + (1));
-			parallel_ir_temp__11_parallel_ir_range__47Int64_skip__49Int64_1_1_1 = centroids.ARRAYELEM(parfor_index_1_46,ppjp300);
-			SSAValue15 = (parallel_ir_temp__13_parallel_ir_range__41Int64_skip__43Int64_1_1_1) - (parallel_ir_temp__11_parallel_ir_range__47Int64_skip__49Int64_1_1_1);
-			parallel_ir_new_array_name_46_1.ARRAYELEM(parfor_index_1_46) = SSAValue15;
-		}
-		;
-		parallel_ir_save_array_len_1_57 = 10;
-		parallel_ir_reduction_output_61 = 0.0;
-		for ( parfor_index_1_57 = 1; parfor_index_1_57 <= (int64_t)parallel_ir_save_array_len_1_57; parfor_index_1_57 += 1)
-		{
-			;
-			parallel_ir_array_temp_SSAValue30_58_1 = parallel_ir_new_array_name_46_1.ARRAYELEM(parfor_index_1_57);
-			SSAValue16 = (int32_t)(2);
-			SSAValue17 = pow(parallel_ir_array_temp_SSAValue30_58_1, SSAValue16);
-			parallel_ir_reduction_output_61 = (parallel_ir_reduction_output_61+SSAValue17);
-		}
-		;
-		SSAValue5 = sqrt(parallel_ir_reduction_output_61);;
-		SSAValue4.ARRAYELEM(ppptemppp299) = SSAValue5;
-		ppptemppp299 = (ppptemppp299) + (1);
-		goto label125;
-		label157 : ;
-		m = ParallelAcceleratorAPILibMTFloat64{SSAValue4.ARRAYELEM(1), 1};
-		SSAValue19 = SSAValue4.ARRAYLEN();
-		for ( ppip301 = 1; ppip301 <= (int64_t)SSAValue19; ppip301 += 1)
-		{
-			;
-			SSAValue27 = SSAValue4.ARRAYELEM(ppip301);
-			SSAValue28 = m.val;
-			SSAValue30 = (SSAValue27) < (SSAValue28);
-			if (!(SSAValue30)) goto label186;
-			SSAValue26 = SSAValue4.ARRAYELEM(ppip301);
-			m.val = SSAValue26;
-			m.idx = ppip301;
-			label186 : ;
-		}
-		;
-		SSAValue20 = m.idx;
-		for ( parfor_index_2_75 = 1; parfor_index_2_75 <= (int64_t)numCenter; parfor_index_2_75 += 1)
-		{
-			for ( parfor_index_1_75 = 1; parfor_index_1_75 <= (int64_t)10; parfor_index_1_75 += 1)
+			for ( parfor_index_1_21 = 1; parfor_index_1_21 <= (int64_t)10; parfor_index_1_21 += 1)
 			{
 				;
-				parallel_ir_array_temp__7_85_1 = SSAValue20;
-				SSAValue14 = (parallel_ir_array_temp__7_85_1 == parfor_index_2_75);
-				parallel_ir_array_temp__21_87_1 = SSAValue14;
-				if (!(parallel_ir_array_temp__21_87_1)) goto label191;
-				parallel_ir_array_temp__9_90_1 = _pa_rand_gen_arr.ARRAYELEM(parfor_index_1_75,((parfor_index_1_25) - (__hpat_loop_start_25)) + (1));
-				HPAT__103_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (HPAT__103_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75)+parallel_ir_array_temp__9_90_1);
-				label191 : ;
-				parallel_ir_array_temp__7_93_1 = SSAValue20;
-				SSAValue18 = (parallel_ir_array_temp__7_93_1 == parfor_index_2_75);
-				SSAValue31 = (SSAValue18) ? (1) : (0);
-				HPAT__109_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (HPAT__109_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75)+SSAValue31);
+				SSAValue2 = cgen_distribution(cgen_rand_generator);
+				;
+				pp_pa_rand_gen_arr_17p283.ARRAYELEM(parfor_index_1_21,parfor_index_2_21) = SSAValue2;
 			}
 		}
 		;
 	}
 	;
-	__hpat_reduce_88 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
-	MPI_Allreduce(HPAT__103_75.data, __hpat_reduce_88.data, (10) * (numCenter), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
-	HPAT__103_75 = __hpat_reduce_88;
-	__hpat_reduce_89 = j2c_array<int64_t>::new_j2c_array_2d(NULL, 10, numCenter);
-	MPI_Allreduce(HPAT__109_75.data, __hpat_reduce_89.data, (10) * (numCenter), MPI_INT64_T, MPI_SUM, MPI_COMM_WORLD);;
-	HPAT__109_75 = __hpat_reduce_89;
-	for(int64_t parfor_index_2_75 = 1; parfor_index_2_75 <= numCenter; parfor_index_2_75 += 1)
+	__hpat_bcast_size_107 = (10) * (numCenter);
+	MPI_Bcast(pp_pa_rand_gen_arr_17p283.data, __hpat_bcast_size_107, MPI_DOUBLE, 0, MPI_COMM_WORLD);;
+	centroids = pp_pa_rand_gen_arr_17p283;
+	0; double __hpat_t1 = MPI_Wtime();
+	ptempp = 1;
+	while (1)
 	{
 		;
-		for(int64_t parfor_index_1_75 = 1; parfor_index_1_75 <= 10; parfor_index_1_75 += 1)
+		SSAValue37 = (ptempp == SSAValue36);
+		SSAValue13 = !(SSAValue37);
+		if (!(SSAValue13)) break;
+		ptempp = (ptempp) + (1);
+		__hpat_dist_arr_div_87 = (N) / (__hpat_num_pes);
+		__hpat_dist_arr_start_87 = (__hpat_node_id) * (__hpat_dist_arr_div_87);
+		__hpat_dist_arr_count_87 = ((__hpat_node_id==__hpat_num_pes-1) ? N-__hpat_node_id*__hpat_dist_arr_div_87 : __hpat_dist_arr_div_87);
+		SSAValue32 = j2c_array<int64_t>::new_j2c_array_1d(NULL, __hpat_dist_arr_count_87);
+		SSAValue0 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
+		__hpat_loop_div_25 = (N) / (__hpat_num_pes);
+		__hpat_loop_start_25 = ((__hpat_node_id) * (__hpat_loop_div_25)) + (1);
+		__hpat_loop_end_25 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_25);
+		HPAT__103_75 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
+		HPAT__109_75 = j2c_array<int64_t>::new_j2c_array_2d(NULL, 10, numCenter);
+		HPAT_SSAValue35_75 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
+		HPAT_SSAValue38_75 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
+		for(int64_t parfor_index_2_75 = 1; parfor_index_2_75 <= numCenter; parfor_index_2_75 += 1)
 		{
 			;
-			HPAT_SSAValue35_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (double)HPAT__109_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75);
-			HPAT_SSAValue38_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (HPAT__103_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75)) / (HPAT_SSAValue35_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75));
-			SSAValue0.ARRAYELEM(parfor_index_1_75,parfor_index_2_75) = HPAT_SSAValue38_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75);
+			for(int64_t parfor_index_1_75 = 1; parfor_index_1_75 <= 10; parfor_index_1_75 += 1)
+			{
+				;
+				HPAT__103_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = 0.0;
+				HPAT__109_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = 0;
+			}
+			;
 		}
 		;
+		#pragma simd
+		for ( parfor_index_1_25 = __hpat_loop_start_25; parfor_index_1_25 <= (int64_t)__hpat_loop_end_25; parfor_index_1_25 += 1)
+		{
+			;
+			SSAValue8 = (1) <= (numCenter);
+			SSAValue9 = (1) - (1);
+			SSAValue6 = (SSAValue8) ? (numCenter) : (SSAValue9);
+			SSAValue10 = (SSAValue6) - (1);
+			SSAValue3 = (SSAValue10) + (1);
+			SSAValue4 = j2c_array<double>::new_j2c_array_1d(NULL, ((1) <= (numCenter)) ? (numCenter) : (0));
+			ppptemppp299 = 1;
+			ppptempp_5p287 = 1;
+			ppptempp_6p288 = 0;
+			while (1)
+			{
+				;
+				SSAValue11 = (ppptempp_6p288 == SSAValue3);
+				SSAValue12 = !(SSAValue11);
+				if (!(SSAValue12)) break;
+				ppptempp_6p288 = (ppptempp_6p288) + (1);
+				SSAValue7 = (ppptempp_5p287) + (1);
+				ppjp300 = ppptempp_5p287;
+				ppptempp_5p287 = SSAValue7;
+				parallel_ir_new_array_name_46_1 = j2c_array<double>::new_j2c_array_1d(NULL, 10);
+				for ( parfor_index_1_46 = 1; parfor_index_1_46 <= (int64_t)10; parfor_index_1_46 += 1)
+				{
+					;
+					parallel_ir_temp__13_parallel_ir_range__41Int64_skip__43Int64_1_1_1 = _pa_rand_gen_arr.ARRAYELEM(parfor_index_1_46,((parfor_index_1_25) - (__hpat_loop_start_25)) + (1));
+					parallel_ir_temp__11_parallel_ir_range__47Int64_skip__49Int64_1_1_1 = centroids.ARRAYELEM(parfor_index_1_46,ppjp300);
+					SSAValue15 = (parallel_ir_temp__13_parallel_ir_range__41Int64_skip__43Int64_1_1_1) - (parallel_ir_temp__11_parallel_ir_range__47Int64_skip__49Int64_1_1_1);
+					parallel_ir_new_array_name_46_1.ARRAYELEM(parfor_index_1_46) = SSAValue15;
+				}
+				;
+				parallel_ir_save_array_len_1_57 = 10;
+				parallel_ir_reduction_output_61 = 0.0;
+				for ( parfor_index_1_57 = 1; parfor_index_1_57 <= (int64_t)parallel_ir_save_array_len_1_57; parfor_index_1_57 += 1)
+				{
+					;
+					parallel_ir_array_temp_SSAValue30_58_1 = parallel_ir_new_array_name_46_1.ARRAYELEM(parfor_index_1_57);
+					SSAValue16 = (int32_t)(2);
+					SSAValue17 = pow(parallel_ir_array_temp_SSAValue30_58_1, SSAValue16);
+					parallel_ir_reduction_output_61 = (parallel_ir_reduction_output_61+SSAValue17);
+				}
+				;
+				SSAValue5 = sqrt(parallel_ir_reduction_output_61);;
+				SSAValue4.ARRAYELEM(ppptemppp299) = SSAValue5;
+				ppptemppp299 = (ppptemppp299) + (1);
+			}
+			;
+			m = ParallelAcceleratorAPILibMTFloat64{SSAValue4.ARRAYELEM(1), 1};
+			SSAValue19 = SSAValue4.ARRAYLEN();
+			for ( ppip301 = 1; ppip301 <= (int64_t)SSAValue19; ppip301 += 1)
+			{
+				;
+				SSAValue27 = SSAValue4.ARRAYELEM(ppip301);
+				SSAValue28 = m.val;
+				SSAValue30 = (SSAValue27) < (SSAValue28);
+				if (SSAValue30)
+				{
+					;
+					SSAValue26 = SSAValue4.ARRAYELEM(ppip301);
+					m.val = SSAValue26;
+					m.idx = ppip301;
+				}
+				;
+			}
+			;
+			SSAValue20 = m.idx;
+			for ( parfor_index_2_75 = 1; parfor_index_2_75 <= (int64_t)numCenter; parfor_index_2_75 += 1)
+			{
+				for ( parfor_index_1_75 = 1; parfor_index_1_75 <= (int64_t)10; parfor_index_1_75 += 1)
+				{
+					;
+					parallel_ir_array_temp__7_85_1 = SSAValue20;
+					SSAValue14 = (parallel_ir_array_temp__7_85_1 == parfor_index_2_75);
+					parallel_ir_array_temp__21_87_1 = SSAValue14;
+					if (parallel_ir_array_temp__21_87_1)
+					{
+						;
+						parallel_ir_array_temp__9_90_1 = _pa_rand_gen_arr.ARRAYELEM(parfor_index_1_75,((parfor_index_1_25) - (__hpat_loop_start_25)) + (1));
+						HPAT__103_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (HPAT__103_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75)+parallel_ir_array_temp__9_90_1);
+					}
+					;
+					parallel_ir_array_temp__7_93_1 = SSAValue20;
+					SSAValue18 = (parallel_ir_array_temp__7_93_1 == parfor_index_2_75);
+					SSAValue31 = (SSAValue18) ? (1) : (0);
+					HPAT__109_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (HPAT__109_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75)+SSAValue31);
+				}
+			}
+			;
+		}
+		;
+		__hpat_reduce_88 = j2c_array<double>::new_j2c_array_2d(NULL, 10, numCenter);
+		MPI_Allreduce(HPAT__103_75.data, __hpat_reduce_88.data, (10) * (numCenter), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
+		HPAT__103_75 = __hpat_reduce_88;
+		__hpat_reduce_89 = j2c_array<int64_t>::new_j2c_array_2d(NULL, 10, numCenter);
+		MPI_Allreduce(HPAT__109_75.data, __hpat_reduce_89.data, (10) * (numCenter), MPI_INT64_T, MPI_SUM, MPI_COMM_WORLD);;
+		HPAT__109_75 = __hpat_reduce_89;
+		for(int64_t parfor_index_2_75 = 1; parfor_index_2_75 <= numCenter; parfor_index_2_75 += 1)
+		{
+			;
+			for(int64_t parfor_index_1_75 = 1; parfor_index_1_75 <= 10; parfor_index_1_75 += 1)
+			{
+				;
+				HPAT_SSAValue35_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (double)HPAT__109_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75);
+				HPAT_SSAValue38_75.ARRAYELEM(parfor_index_1_75, parfor_index_2_75) = (HPAT__103_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75)) / (HPAT_SSAValue35_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75));
+				SSAValue0.ARRAYELEM(parfor_index_1_75,parfor_index_2_75) = HPAT_SSAValue38_75.ARRAYELEM(parfor_index_1_75,parfor_index_2_75);
+			}
+			;
+		}
+		;
+		centroids = SSAValue0;
 	}
 	;
-	centroids = SSAValue0;
-	goto label30;
-	label106 : ;
 	0; if(__hpat_node_id==0) printf("exec time %lf\n", MPI_Wtime()-__hpat_t1);;
 	*ret0 = centroids;
 	return;

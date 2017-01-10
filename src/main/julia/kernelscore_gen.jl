@@ -1,6 +1,8 @@
 using HPAT
 using ParallelAccelerator
-ParallelAccelerator.ParallelIR.PIRHoistParfors(true)
+ParallelAccelerator.ParallelIR.PIRHoistParfors(1)
+ParallelAccelerator.CGen.setRecreateLoops(true)
+ParallelAccelerator.CGen.setRecreateConds(true)
 
 @acc hpat function kernelscore_test(n)
     X = rand(n)

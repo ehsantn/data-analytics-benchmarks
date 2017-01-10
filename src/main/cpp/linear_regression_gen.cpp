@@ -89,8 +89,7 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	std::random_device cgen_rand_device;
 	std::uniform_real_distribution<double> cgen_distribution(0.0,1.0);
 	std::normal_distribution<double> cgen_n_distribution(0.0,1.0);
-	//std::default_random_engine cgen_rand_generator(cgen_rand_device());
-	std::default_random_engine cgen_rand_generator(0);
+	std::default_random_engine cgen_rand_generator(cgen_rand_device());
 	;;
 	MPI_Comm_size(MPI_COMM_WORLD,&__hpat_num_pes);;
 	MPI_Comm_rank(MPI_COMM_WORLD,&__hpat_node_id);;
@@ -146,67 +145,69 @@ void pplinear_regressionp271(int64_t iterations, int64_t N,  j2c_array< double >
 	;
 	w = SSAValue4;
 	double __hpat_t1 = MPI_Wtime();
-	label37 : ;
-	SSAValue9 = (ptempp == SSAValue8);
-	SSAValue10 = !(SSAValue9);
-	if (!(SSAValue10)) goto label71;
-	ptempp = (ptempp) + (1);
-	__hpat_loop_div_59 = (N) / (__hpat_num_pes);
-	__hpat_loop_start_59 = ((__hpat_node_id) * (__hpat_loop_div_59)) + (1);
-	__hpat_loop_end_59 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_59);
-	SSAValue12 = j2c_array<double>::new_j2c_array_2d(NULL, 4, N);
-	memset(SSAValue12.data, 0, sizeof(double)*(10) * (4));
-	#pragma simd
-	for ( _dist_parfor_53_index1 = __hpat_loop_start_59; _dist_parfor_53_index1 <= (int64_t)__hpat_loop_end_59; _dist_parfor_53_index1 += 1)
+	while (1)
 	{
-		for ( _dist_parfor_54_index2 = 1; _dist_parfor_54_index2 <= (int64_t)4; _dist_parfor_54_index2 += 1)
+		;
+		SSAValue9 = (ptempp == SSAValue8);
+		SSAValue10 = !(SSAValue9);
+		if (!(SSAValue10)) break;
+		ptempp = (ptempp) + (1);
+		__hpat_loop_div_59 = (N) / (__hpat_num_pes);
+		__hpat_loop_start_59 = ((__hpat_node_id) * (__hpat_loop_div_59)) + (1);
+		__hpat_loop_end_59 = ((__hpat_node_id==__hpat_num_pes-1) ? N : (__hpat_node_id+1)*__hpat_loop_div_59);
+		SSAValue12 = j2c_array<double>::new_j2c_array_2d(NULL, 4, N);
+		memset(SSAValue12.data, 0, sizeof(double)*(10) * (4));
+		#pragma simd
+		for ( _dist_parfor_53_index1 = __hpat_loop_start_59; _dist_parfor_53_index1 <= (int64_t)__hpat_loop_end_59; _dist_parfor_53_index1 += 1)
 		{
-			;
-			_dist_gemm_tmp3_58 = 0;
-			for(int64_t _dist_loop_55_index = 1; _dist_loop_55_index <= 10; _dist_loop_55_index += 1)
+			for ( _dist_parfor_54_index2 = 1; _dist_parfor_54_index2 <= (int64_t)4; _dist_parfor_54_index2 += 1)
 			{
 				;
-				_dist_gemm_tmp1_56 = w.ARRAYELEM(_dist_parfor_54_index2,_dist_loop_55_index);
-				_dist_gemm_tmp2_57 = pp_pa_rand_gen_arr_14p276.ARRAYELEM(_dist_loop_55_index,((_dist_parfor_53_index1) - (__hpat_loop_start_59)) + (1));
-				_dist_gemm_tmp3_58 = (_dist_gemm_tmp3_58) + ((_dist_gemm_tmp1_56) * (_dist_gemm_tmp2_57));
+				_dist_gemm_tmp3_58 = 0;
+				for(int64_t _dist_loop_55_index = 1; _dist_loop_55_index <= 10; _dist_loop_55_index += 1)
+				{
+					;
+					_dist_gemm_tmp1_56 = w.ARRAYELEM(_dist_parfor_54_index2,_dist_loop_55_index);
+					_dist_gemm_tmp2_57 = pp_pa_rand_gen_arr_14p276.ARRAYELEM(_dist_loop_55_index,((_dist_parfor_53_index1) - (__hpat_loop_start_59)) + (1));
+					_dist_gemm_tmp3_58 = (_dist_gemm_tmp3_58) + ((_dist_gemm_tmp1_56) * (_dist_gemm_tmp2_57));
+				}
+				;
+				parallel_ir_array_temp_SSAValue55_42_1 = _dist_gemm_tmp3_58;
+				parallel_ir_array_temp__12_43_1 = _pa_rand_gen_arr.ARRAYELEM(_dist_parfor_54_index2,((_dist_parfor_53_index1) - (__hpat_loop_start_59)) + (1));
+				SSAValue15 = (parallel_ir_array_temp_SSAValue55_42_1) - (parallel_ir_array_temp__12_43_1);
+				SSAValue16 = (alphaN) * (SSAValue15);
+				_dist_gemm_tmp2_64 = SSAValue16;
+				for(int64_t _dist_loop_62_index = 1; _dist_loop_62_index <= 10; _dist_loop_62_index += 1)
+				{
+					;
+					_dist_gemm_tmp1_63 = pp_pa_rand_gen_arr_14p276.ARRAYELEM(_dist_loop_62_index,((_dist_parfor_53_index1) - (__hpat_loop_start_59)) + (1));
+					_dist_gemm_tmp3_65 = SSAValue12.ARRAYELEM(_dist_parfor_54_index2,_dist_loop_62_index);
+					_dist_gemm_tmp3_65 = (_dist_gemm_tmp3_65) + ((_dist_gemm_tmp1_63) * (_dist_gemm_tmp2_64));
+					SSAValue12.ARRAYELEM(_dist_parfor_54_index2,_dist_loop_62_index) = _dist_gemm_tmp3_65;
+				}
+				;
 			}
-			;
-			parallel_ir_array_temp_SSAValue55_42_1 = _dist_gemm_tmp3_58;
-			parallel_ir_array_temp__12_43_1 = _pa_rand_gen_arr.ARRAYELEM(_dist_parfor_54_index2,((_dist_parfor_53_index1) - (__hpat_loop_start_59)) + (1));
-			SSAValue15 = (parallel_ir_array_temp_SSAValue55_42_1) - (parallel_ir_array_temp__12_43_1);
-			SSAValue16 = (alphaN) * (SSAValue15);
-			_dist_gemm_tmp2_64 = SSAValue16;
-			for(int64_t _dist_loop_62_index = 1; _dist_loop_62_index <= 10; _dist_loop_62_index += 1)
+		}
+		;
+		__hpat_reduce_67 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
+		MPI_Allreduce(SSAValue12.data, __hpat_reduce_67.data, (4) * (10), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
+		SSAValue12 = __hpat_reduce_67;
+		parallel_ir_new_array_name_50_1 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
+		for ( parfor_index_2_50 = 1; parfor_index_2_50 <= (int64_t)10; parfor_index_2_50 += 1)
+		{
+			for ( parfor_index_1_50 = 1; parfor_index_1_50 <= (int64_t)4; parfor_index_1_50 += 1)
 			{
 				;
-				_dist_gemm_tmp1_63 = pp_pa_rand_gen_arr_14p276.ARRAYELEM(_dist_loop_62_index,((_dist_parfor_53_index1) - (__hpat_loop_start_59)) + (1));
-				_dist_gemm_tmp3_65 = SSAValue12.ARRAYELEM(_dist_parfor_54_index2,_dist_loop_62_index);
-				_dist_gemm_tmp3_65 = (_dist_gemm_tmp3_65) + ((_dist_gemm_tmp1_63) * (_dist_gemm_tmp2_64));
-				SSAValue12.ARRAYELEM(_dist_parfor_54_index2,_dist_loop_62_index) = _dist_gemm_tmp3_65;
+				parallel_ir_array_temp__8_51_1 = w.ARRAYELEM(parfor_index_1_50,parfor_index_2_50);
+				parallel_ir_array_temp_SSAValue59_52_1 = SSAValue12.ARRAYELEM(parfor_index_1_50,parfor_index_2_50);
+				SSAValue3 = (parallel_ir_array_temp__8_51_1) - (parallel_ir_array_temp_SSAValue59_52_1);
+				parallel_ir_new_array_name_50_1.ARRAYELEM(parfor_index_1_50,parfor_index_2_50) = SSAValue3;
 			}
-			;
 		}
+		;
+		w = parallel_ir_new_array_name_50_1;
 	}
 	;
-	__hpat_reduce_67 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
-	MPI_Allreduce(SSAValue12.data, __hpat_reduce_67.data, (4) * (10), MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);;
-	SSAValue12 = __hpat_reduce_67;
-	parallel_ir_new_array_name_50_1 = j2c_array<double>::new_j2c_array_2d(NULL, 4, 10);
-	for ( parfor_index_2_50 = 1; parfor_index_2_50 <= (int64_t)10; parfor_index_2_50 += 1)
-	{
-		for ( parfor_index_1_50 = 1; parfor_index_1_50 <= (int64_t)4; parfor_index_1_50 += 1)
-		{
-			;
-			parallel_ir_array_temp__8_51_1 = w.ARRAYELEM(parfor_index_1_50,parfor_index_2_50);
-			parallel_ir_array_temp_SSAValue59_52_1 = SSAValue12.ARRAYELEM(parfor_index_1_50,parfor_index_2_50);
-			SSAValue3 = (parallel_ir_array_temp__8_51_1) - (parallel_ir_array_temp_SSAValue59_52_1);
-			parallel_ir_new_array_name_50_1.ARRAYELEM(parfor_index_1_50,parfor_index_2_50) = SSAValue3;
-		}
-	}
-	;
-	w = parallel_ir_new_array_name_50_1;
-	goto label37;
-	label71 : ;
 	0; if(__hpat_node_id==0) printf("exec time %lf\n", MPI_Wtime()-__hpat_t1);;
 	*ret0 = w;
 	return;
