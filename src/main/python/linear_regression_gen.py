@@ -29,8 +29,8 @@ if __name__ == "__main__":
     print("Initial w: " + str(w))
 
     def gradient(matrix, w):
-        Y = matrix[:, 0:2]
-        X = matrix[:, 2:]
+        Y = matrix[:, 0:p]
+        X = matrix[:, p:]
         return alphaN * X.T.dot(X.dot(w)-Y)
 
     def add(x, y):
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         return x
 
     for i in range(iterations):
-        print("On iteration %i" % (i + 1))
+        #print("On iteration %i" % (i + 1))
         w -= points.map(lambda m: gradient(m, w)).reduce(add)
 
     print("linear regression exec time %f" % (time.time()-start))

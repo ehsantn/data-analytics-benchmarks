@@ -39,7 +39,7 @@ if __name__ == "__main__":
         return x
 
     for i in range(iterations):
-        print("On iteration %i" % (i + 1))
+        #print("On iteration %i" % (i + 1))
         w -= points.map(lambda m: gradient(m, w)).reduce(add)
 
     print("Final w: " + str(w))
