@@ -1,5 +1,5 @@
-CC=CC
-CFLAGS=-std=c++11 -O3 -wd2593
+CC=mpiicpc
+CFLAGS=-std=c++11 -O3 -xHost -wd2593
 LDFLAGS=
 
 CPP_DIR=../src/main/cpp/
