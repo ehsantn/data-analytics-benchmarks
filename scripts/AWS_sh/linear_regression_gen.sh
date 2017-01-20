@@ -7,17 +7,17 @@ D=10
 F=4
 
 num_cores=36
-#total_cores=144 
-total_cores=36
+total_cores=144 
+#total_cores=36
 
-${SPARK_DIR}/sbin/stop-all.sh
-${SPARK_DIR}/sbin/start-all.sh
+#${SPARK_DIR}/sbin/stop-all.sh
+#${SPARK_DIR}/sbin/start-all.sh
 
-${SPARK_DIR}/bin/spark-submit $benchmark_dir/src/main/python/linear_regression_gen.py $size $iter $D $F &> res_spark_linear_regression_gen.out
+#${SPARK_DIR}/bin/spark-submit $benchmark_dir/src/main/python/linear_regression_gen.py $size $iter $D $F &> res_spark_linear_regression_gen.out
 
-${SPARK_DIR}/sbin/stop-all.sh
+#${SPARK_DIR}/sbin/stop-all.sh
 
-#HOSTS="ip-172-31-43-11.us-west-2.compute.internal,ip-172-31-43-10.us-west-2.compute.internal,ip-172-31-43-9.us-west-2.compute.internal,ip-172-31-43-8.us-west-2.compute.internal"
+HOSTS="ip-172-31-20-24.us-west-2.compute.internal,ip-172-31-18-133.us-west-2.compute.internal,ip-172-31-23-50.us-west-2.compute.internal,ip-172-31-23-37.us-west-2.compute.internal"
 #HOSTS=localhost
 #mpirun -n 144 -ppn 36 -hosts ${HOSTS} python $benchmark_dir/src/main/python/linear_regression_mpi.py $size $iter &> tmp_python_linear_regression_gen.txt
 
