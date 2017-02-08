@@ -3,6 +3,7 @@ using MPI
 using DocOpt
 using ParallelAccelerator
 ParallelAccelerator.ParallelIR.PIRHoistParfors(1)
+#ParallelAccelerator.ParallelIR.set_debug_level(3)
 ParallelAccelerator.CGen.setRecreateLoops(true)
 ParallelAccelerator.CGen.setRecreateConds(true)
 HPAT.DistributedPass.DistOptimize(true)
