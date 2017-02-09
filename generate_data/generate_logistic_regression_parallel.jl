@@ -10,8 +10,8 @@ using HPAT
 
 @acc hpat function generate_file(hdf5_file, txt_file, N)
     D = 10
-    A = rand(Float64,D,N)
-    Y = rand(Float64,N)
+    A = randn(D,N)
+    Y = (rand(N).> .5)+0.0
     DataSink(A, HDF5,"/points", hdf5_file)
     DataSink(Y, HDF5,"/responses", hdf5_file)
     points = [A; ParallelAccelerator.API.reshape(Y,1,N)]
