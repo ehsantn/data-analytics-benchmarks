@@ -51,7 +51,7 @@ Options:
     if isfile(hdf5_file)
         rm(hdf5_file)
     end
-    txt_file = path*"logistic_regression.hdf5"
+    txt_file = path*"logistic_regression.csv"
     if isfile(txt_file)
         rm(txt_file)
     end
