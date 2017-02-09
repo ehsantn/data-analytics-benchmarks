@@ -30,8 +30,8 @@ if __name__ == "__main__":
     print("Initial w: " + str(w))
 
     def gradient(matrix, w):
-        Y = matrix[:, 0]    # point labels (first column of input file)
-        X = matrix[:, 1:]   # point coordinates
+        Y = matrix[:, -1]    # point labels (last column of input file)
+        X = matrix[:, 0:-1]   # point coordinates
         return ((1.0 / (1.0 + np.exp(-Y * X.dot(w))) - 1.0) * Y * X.T).sum(1)
 
     def add(x, y):
