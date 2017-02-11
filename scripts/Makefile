@@ -4,7 +4,7 @@ LDFLAGS=
 
 CPP_DIR=../src/main/cpp/
 
-all: linear_regression_gen logistic_regression_gen kmeans_gen kernelscore_gen
+all: linear_regression_gen logistic_regression logistic_regression_gen kmeans_gen kernelscore_gen
 
 manual: logistic_regression_manual_gen kernelscore_gen_manual linear_regression_manual_gen kmeans_manual_gen
 
@@ -13,6 +13,9 @@ linear_regression_gen: $(CPP_DIR)/linear_regression_gen_main.cc $(CPP_DIR)/linea
 
 logistic_regression_gen: $(CPP_DIR)/logistic_regression_gen_main.cc $(CPP_DIR)/logistic_regression_gen.cpp
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+
+logistic_regression: $(CPP_DIR)/logistic_regression_main.cc $(CPP_DIR)/logistic_regression.cpp
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< -lhdf5
 
 kmeans_gen: $(CPP_DIR)/kmeans_gen_main.cc $(CPP_DIR)/kmeans_gen.cpp
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
