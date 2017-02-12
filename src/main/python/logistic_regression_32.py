@@ -10,7 +10,7 @@ def readPointBatch(iterator):
     strs = list(iterator)
     matrix = np.zeros((len(strs), D + 1))
     for i, s in enumerate(strs):
-        matrix[i] = np.fromstring(s.replace(',', ' '), dtype=np.float64, sep=' ')
+        matrix[i] = np.fromstring(s.replace(',', ' '), dtype=np.float32, sep=' ')
     return [matrix]
 
 if __name__ == "__main__":
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     start = time.time()
 
     # Initialize w to a random value
-    w = 2 * np.ones(size=D) - 1
+    w = 2 * np.random.ranf(size=D).astype(np.float32) - 1
     print("Initial w: " + str(w))
 
     def gradient(matrix, w):
