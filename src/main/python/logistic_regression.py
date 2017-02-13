@@ -26,7 +26,7 @@ if __name__ == "__main__":
     start = time.time()
 
     # Initialize w to a random value
-    w = 2 * np.ones(size=D) - 1
+    w = np.ones(size=D) - 0.5
     print("Initial w: " + str(w))
 
     def gradient(matrix, w):
