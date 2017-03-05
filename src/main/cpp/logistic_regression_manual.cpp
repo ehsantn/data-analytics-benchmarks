@@ -12,6 +12,7 @@
 #include <ctime>
 #include <stdlib.h>
 #include <assert.h>
+#include <cstring>
 
 double* logistic_regression(int64_t iterations, char* file_name)
 {
@@ -129,8 +130,10 @@ double* logistic_regression(int64_t iterations, char* file_name)
     double t1 = MPI_Wtime();
     
     for(int64_t iter=0; iter<iterations; iter++){
-        for(int kk=0; kk<D; kk++)
-            grad[kk] = 0.0;
+        //for(int kk=0; kk<D; kk++)
+          //  grad[kk] = 0.0;
+        memset(grad, 0, sizeof(double)*D);
+        #pragma simd
         for ( ind = 0; ind < my_count; ind +=1)
         {
                 double wpp = 0.0;
