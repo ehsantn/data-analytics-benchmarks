@@ -4,6 +4,7 @@ using HPAT
 #HPAT.DistributedPass.set_debug_level(3)
 #HPAT.DomainPass.set_debug_level(3)
 #HPAT.CaptureAPI.set_debug_level(3)
+#HPAT.DomainPass.set_debug_level(3)
 #using ParallelAccelerator
 #ParallelAccelerator.CGen.set_debug_level(3)
 #ParallelAccelerator.DomainIR.set_debug_level(3)
@@ -11,7 +12,16 @@ using HPAT
 @acc hpat function generate_file(hdf5_file, txt_file, N)
     D = 10
     A = randn(D,N)
-    Y = (rand(N).> .5)+0.0
+    w = rand(1,D)
+    print(w)
+    S = (w*A .> .0)+0.0
+    B = ParallelAccelerator.API.reshape(S, (N,))
+    T = rand(N) .> .95
+    Y = map((t,b)-> t?1.0-b:b, T, B)
+    #Y = ones(N).+10.0
+    #@par for i in 1:N
+    #    Y[i] = T[i] ? B[i] : 1-B[i]
+    #end
     DataSink(A, HDF5,"/points", hdf5_file)
     DataSink(Y, HDF5,"/responses", hdf5_file)
     points = [A; ParallelAccelerator.API.reshape(Y,1,N)]
