@@ -9,19 +9,19 @@
 
 export OMP_NUM_THREADS=1
 echo "LR"
-srun -n 32 -c 2 ./logistic_regression_gen
-srun -n 128 -c 2 ./logistic_regression_gen
-srun -n 512 -c 2 ./logistic_regression_gen
-srun -n 2048 -c 2 ./logistic_regression_gen
+srun -N 1 -n 32 -c 2 --cpu_bind=cores ./logistic_regression_gen
+srun -N 4 -n 128 -c 2 --cpu_bind=cores ./logistic_regression_gen
+srun -N 16 -n 512 -c 2 --cpu_bind=cores ./logistic_regression_gen
+srun -N 64 -n 2048 -c 2 --cpu_bind=cores ./logistic_regression_gen
 
 echo "LR noopt"
-srun -n 32 -c 2 ./logistic_regression_gen_noopt
-srun -n 128 -c 2 ./logistic_regression_gen_noopt
-srun -n 512 -c 2 ./logistic_regression_gen_noopt
-srun -n 2048 -c 2 ./logistic_regression_gen_noopt
+srun -N 1 -n 32 -c 2 --cpu_bind=cores ./logistic_regression_gen_noopt
+srun -N 4 -n 128 -c 2 --cpu_bind=cores ./logistic_regression_gen_noopt
+srun -N 16 -n 512 -c 2 --cpu_bind=cores ./logistic_regression_gen_noopt
+srun -N 64 -n 2048 -c 2 --cpu_bind=cores ./logistic_regression_gen_noopt
 
 echo "manual LR"
-srun -n 32 -c 2 ./logistic_regression_manual_gen 1000000000 20 
-srun -n 128 -c 2 ./logistic_regression_manual_gen 1000000000 20
-srun -n 512 -c 2 ./logistic_regression_manual_gen 1000000000 20
-srun -n 2048 -c 2 ./logistic_regression_manual_gen 1000000000 20
+srun -N 1 -n 32 -c 2 --cpu_bind=cores ./logistic_regression_manual_gen 1000000000 20 
+srun -N 4 -n 128 -c 2 --cpu_bind=cores ./logistic_regression_manual_gen 1000000000 20
+srun -N 16 -n 512 -c 2 --cpu_bind=cores ./logistic_regression_manual_gen 1000000000 20
+srun -N 64 -n 2048 -c 2 --cpu_bind=cores ./logistic_regression_manual_gen 1000000000 20
